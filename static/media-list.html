@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ciak media list</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Media list</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row">
+    {{range .MediaList}}
+
+        <div class="card col-12 m-1">
+            <!--<img class="card-img-top" src=".../100px180/"> -->
+            <div class="card-body">
+                <h5 class="card-title">{{.Name}}</h5>
+                <p class="card-text">{{.Extension}}</p>
+                <a href="media/{{.Hash}}" class="btn btn-primary">View</a>
+            </div>
+        </div>
+
+    {{end}}
+    </div>
+</div>
+</body>
+</html>
