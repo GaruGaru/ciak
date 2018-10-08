@@ -19,7 +19,12 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageTemplate, _ := template.ParseFiles("static/media-list.html")
+	pageTemplate, err := template.ParseFiles("static/media-list.html")
+
+	if err != nil {
+		w.Write([]byte(err.Error()))
+		return
+	}
 
 	page := MediaListPage{
 		MediaCount: len(mediaList),

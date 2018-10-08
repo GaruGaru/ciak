@@ -3,22 +3,23 @@ package server
 import (
 	"github.com/GaruGaru/ciak/config"
 	"github.com/GaruGaru/ciak/discovery"
+	"github.com/GaruGaru/ciak/encoding"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
-func NewCiakServer(config config.CiakConfig) CiakServer {
+func NewCiakServer(config config.CiakConfig, mediaDiscovery discovery.MediaDiscovery, encoder encoding.MediaEncoder) CiakServer {
 	return CiakServer{
-		Config: config,
-		MediaDiscovery: discovery.FileSystemMediaDiscovery{
-			BasePath: config.MediaPath,
-		},
+		Config:         config,
+		MediaDiscovery: mediaDiscovery,
+		MediaEncoder:   encoder,
 	}
 }
 
 type CiakServer struct {
 	Config         config.CiakConfig
 	MediaDiscovery discovery.MediaDiscovery
+	MediaEncoder   encoding.MediaEncoder
 }
 
 func (s CiakServer) Run() error {
