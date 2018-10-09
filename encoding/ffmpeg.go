@@ -2,7 +2,7 @@ package encoding
 
 import (
 	"bytes"
-	"fmt"
+	log "github.com/sirupsen/logrus"
 	"os/exec"
 )
 
@@ -14,7 +14,7 @@ var (
 )
 
 func (FFMpegEncoder) Encode(input string, output string) error {
-	cmd := exec.Command("ffmpeg", "-i", input, output)
+	cmd := exec.Command("ffmpeg", "-i", input, "-vcodec", "copy", "-acodec", "copy", output)
 	cmdOutput := &bytes.Buffer{}
 	cmdErrOutput := &bytes.Buffer{}
 	cmd.Stdout = cmdOutput
@@ -22,8 +22,9 @@ func (FFMpegEncoder) Encode(input string, output string) error {
 
 	err := cmd.Run()
 
-	fmt.Println(string(cmdOutput.Bytes()))
-	fmt.Println(string(cmdErrOutput.Bytes()))
+	log.Info(string(cmdOutput.Bytes()))
+	log.Error(string(cmdErrOutput.Bytes()))
+
 	return err
 }
 
