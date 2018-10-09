@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  ciak:
+    image: garugaru/ciak
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile

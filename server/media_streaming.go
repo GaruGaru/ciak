@@ -51,7 +51,7 @@ func (s CiakServer) tryEncodeMedia(media discovery.Media) (discovery.Media, erro
 
 	os.Remove(outPath)
 
-	err := s.MediaEncoder.Encode(media.FilePath,outPath)
+	err := s.MediaEncoder.Encode(media.FilePath, outPath)
 
 	if err != nil {
 		return discovery.Media{}, err

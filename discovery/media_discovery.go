@@ -6,10 +6,10 @@ import (
 )
 
 type Media struct {
-	Name     string
+	Name      string
 	Extension string
-	FilePath string
-	Size     int64
+	FilePath  string
+	Size      int64
 }
 
 func (m Media) Hash() string {

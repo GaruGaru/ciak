@@ -2,6 +2,7 @@ package discovery
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"path"
 	"path/filepath"
@@ -48,6 +49,8 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	log.Info("Found ", len(mediaList), " media after discovery")
 
 	return mediaList, nil
 }

@@ -13,7 +13,7 @@ var (
 	SupportedExtensions = []string{"avi", "mp4", "mkv"}
 )
 
-func (FFMpegEncoder) Encode(input string, output string) (error) {
+func (FFMpegEncoder) Encode(input string, output string) error {
 	cmd := exec.Command("ffmpeg", "-i", input, output)
 	cmdOutput := &bytes.Buffer{}
 	cmdErrOutput := &bytes.Buffer{}
