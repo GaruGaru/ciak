@@ -2,11 +2,19 @@ package discovery
 
 import (
 	"fmt"
+	"github.com/GaruGaru/ciak/utils"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+)
+
+var (
+	FormatsWhitelist = []string{
+		".avi", ".mkv", ".flac", ".mp4", ".m4a", ".mp3", ".ogv",
+		".ogm", ".ogg", ".oga", ".opus", ".webm", ".wav",
+	}
 )
 
 type FileSystemMediaDiscovery struct {
@@ -33,14 +41,14 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 
 	mediaList := make([]Media, 0)
 
-	err := filepath.Walk(d.BasePath, func(path string, file os.FileInfo, err error) error {
+	err := filepath.Walk(d.BasePath, func(filePath string, file os.FileInfo, err error) error {
 
 		if err != nil {
 			return err
 		}
 
-		if !file.IsDir() {
-			mediaList = append(mediaList, fileToMedia(file, path))
+		if !file.IsDir() && utils.StringIn(path.Ext(filePath), FormatsWhitelist) {
+			mediaList = append(mediaList, fileToMedia(file, filePath))
 		}
 
 		return nil

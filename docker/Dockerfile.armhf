@@ -9,7 +9,7 @@ RUN dep ensure -vendor-only
 RUN CGO_ENABLED=0 go build -o ciak -ldflags="-s -w" ciak.go
 RUN cp ciak /
 
-FROM jrottenberg/ffmpeg:4.0-scratch
+FROM garugaru/rpi-ffmpeg
 
 RUN apk update
 RUN apk upgrade

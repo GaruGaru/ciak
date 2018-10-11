@@ -2,7 +2,6 @@ package encoding
 
 import (
 	"bytes"
-	log "github.com/sirupsen/logrus"
 	"os/exec"
 )
 
@@ -10,7 +9,7 @@ type FFMpegEncoder struct {
 }
 
 var (
-	SupportedExtensions = []string{"avi", "mp4", "mkv"}
+	SupportedExtensions = []string{"avi", "mkv"}
 )
 
 func (FFMpegEncoder) Encode(input string, output string) error {
@@ -22,8 +21,8 @@ func (FFMpegEncoder) Encode(input string, output string) error {
 
 	err := cmd.Run()
 
-	log.Info(string(cmdOutput.Bytes()))
-	log.Error(string(cmdErrOutput.Bytes()))
+	//log.Info(string(cmdOutput.Bytes()))
+	//log.Error(string(cmdErrOutput.Bytes()))
 
 	return err
 }
