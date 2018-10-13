@@ -11,6 +11,7 @@ type CiakServerConfig struct {
 }
 
 type CiakDaemonConfig struct {
+	OutputPath       string
 	AutoConvertMedia bool
 	DeleteOriginal   bool
 	Workers          int

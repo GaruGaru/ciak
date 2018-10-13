@@ -24,7 +24,7 @@ func (mt MediaConvertTask) Run() error {
 		mt.OutputFormat = "mp4"
 	}
 
-	log.Info("Trying to convert ", mt.Media.Name)
+	log.Info("Converting media ", mt.Media.Name)
 
 	if !mt.Encoder.CanEncode(mt.Media.Extension) {
 		log.Warn("Unable to convert ", mt.Media.FilePath, " extension not supported.")
@@ -57,7 +57,7 @@ func (mt MediaConvertTask) Run() error {
 
 	output := discovery.Media{
 		Name:      srcName,
-		Extension: "mp4",
+		Extension: mt.OutputFormat,
 		FilePath:  outPath,
 		Size:      0,
 	}
@@ -72,29 +72,4 @@ func (mt MediaConvertTask) Run() error {
 	log.Info("Media convert task completed successfully: ", output)
 
 	return nil
-}
-
-type ConvertAllMediaTask struct {
-	MediaDiscovery discovery.MediaDiscovery
-	OutputPath     string
-	Encoder        encoding.MediaEncoder
-}
-
-func (ct ConvertAllMediaTask) Run() error {
-
-	mediaList, err := ct.MediaDiscovery.Discover()
-	if err != nil {
-		panic(err)
-	}
-
-	for _, media := range mediaList {
-		log.Info("Scheduled ", media.Name, " for conversion")
-		// TODO Implement conversion
-		//workerPool.Schedule(daemon.MediaConvertTask{
-		//	Encoder:    encoder,
-		//	Media:      media,
-		//	OutputPath: "/tmp/",
-		//})
-	}
-	return err
 }
