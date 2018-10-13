@@ -1,6 +1,8 @@
 package daemon
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 type WorkerPool struct {
 	Size           int
@@ -20,9 +22,13 @@ func (wp WorkerPool) Start() {
 	for i := 0; i < wp.Size; i++ {
 		go wp.startWorker(i)
 	}
+
+	<-wp.SignalsChannel
+
+	logrus.Warn("Received stop signal")
 }
 
-func (wp WorkerPool) Stop(arg Task) {
+func (wp WorkerPool) Stop() {
 	wp.SignalsChannel <- true
 }
 
@@ -39,6 +45,8 @@ func (wp WorkerPool) startWorker(id int) {
 	for {
 		select {
 		case <-wp.SignalsChannel:
+			close(wp.Tasks)
+			close(wp.SignalsChannel)
 			return
 		case task := <-wp.Tasks:
 			err := task.Run()

@@ -14,6 +14,12 @@
   version = "v1.6.2"
 
 [[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
   revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
@@ -24,6 +30,18 @@
   packages = ["."]
   revision = "ad15b42461921f1fb3529b058c6786c6a45d5162"
   version = "v1.1.1"
+
+[[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
@@ -43,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2ce1d5ae7f76fc0277a304553a6712472b808048f92a0c690a1726083a2caba0"
+  inputs-digest = "aecdca528c394446f135a129c13b4ec8cae580208ce4e780d38af1a8a9dc298f"
   solver-name = "gps-cdcl"
   solver-version = 1
