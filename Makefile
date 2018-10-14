@@ -45,7 +45,7 @@ docker-build-arm:
 
 .PHONY: docker-push-image-arm
 docker-push-image-arm: docker-build-arm
-	docker push ${IMAGE}::armhf
+	docker push ${IMAGE}:armhf
 
 .PHONY: docker-up
 docker-up:
