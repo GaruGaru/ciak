@@ -27,18 +27,25 @@ deps:
 
 # DOCKER
 
-IMAGE=garugaru/ciak:${VERSION}
+IMAGE=garugaru/ciak
 
 BASE_COMPOSE=docker/docker-compose.yml
 
 .PHONY: docker-build
 docker-build:
-	docker build -f docker/Dockerfile -t ${IMAGE} .
+	docker build -f docker/Dockerfile -t ${IMAGE}:latest -t ${IMAGE}:${VERSION} .
 
 .PHONY: docker-push-image
 docker-push-image: docker-build
-	docker push ${IMAGE}
+	docker push ${IMAGE}:${VERSION}
 
+.PHONY: docker-build-arm
+docker-build-arm:
+	docker build -f docker/Dockerfile.armhf -t ${IMAGE}:armhf .
+
+.PHONY: docker-push-image-arm
+docker-push-image-arm: docker-build-arm
+	docker push ${IMAGE}::armhf
 
 .PHONY: docker-up
 docker-up:
