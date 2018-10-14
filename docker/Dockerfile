@@ -11,7 +11,8 @@ RUN cp ciak /
 
 FROM jrottenberg/ffmpeg:4.0-alpine
 
-COPY --from=build /ciak /usr/bin/ciak
-
+COPY static/ /home/static/
+COPY --from=build /ciak /home/ciak
+RUN ln -s /home/ciak /usr/bin/ciak
 WORKDIR /home
 ENTRYPOINT ["ciak"]

@@ -11,7 +11,8 @@ RUN cp ciak /
 
 FROM garugaru/rpi-ffmpeg
 
-COPY --from=build /ciak /usr/bin/ciak
-
+COPY static/ /home/static/
+COPY --from=build /ciak /home/ciak
+RUN ln -s /home/ciak /usr/bin/ciak
 WORKDIR /home
-ENTRYPOINT ciak
+ENTRYPOINT ["ciak"]
