@@ -42,7 +42,7 @@ docker-push-image: docker-build
 
 .PHONY: docker-build-arm
 docker-build-arm:
-	docker build -f docker/Dockerfile.armhf -t ${ARMHF_IMAGE}:latest -t ${ARMHF_IMAGE}:${VERSION} .  .
+	docker build -f docker/Dockerfile.armhf -t ${ARMHF_IMAGE}:latest -t ${ARMHF_IMAGE}:${VERSION} .
 
 .PHONY: docker-push-image-arm
 docker-push-image-arm: docker-build-arm
