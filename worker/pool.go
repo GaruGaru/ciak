@@ -2,25 +2,28 @@ package worker
 
 import (
 	"github.com/sirupsen/logrus"
+	"sync/atomic"
 )
 
 type WorkerPool struct {
-	Size           int
+	BaseSize       int
 	Tasks          chan Task
 	SignalsChannel chan interface{}
+	WorkersCount   int32
 }
 
 func NewWorkerPool(size int, backPressure int) WorkerPool {
 	return WorkerPool{
-		Size:           size,
+		BaseSize:       size,
 		Tasks:          make(chan Task, backPressure),
 		SignalsChannel: make(chan interface{}),
+		WorkersCount:   0,
 	}
 }
 
 func (wp WorkerPool) Start() {
-	for i := 0; i < wp.Size; i++ {
-		go wp.startWorker(i)
+	for i := 0; i < wp.BaseSize; i++ {
+		go wp.startWorker()
 	}
 
 	<-wp.SignalsChannel
@@ -32,6 +35,11 @@ func (wp WorkerPool) Stop() {
 	wp.SignalsChannel <- true
 }
 
+func (wp WorkerPool) ScheduleWithWorker(arg Task) bool {
+	go wp.startWorker()
+	return wp.Schedule(arg)
+}
+
 func (wp WorkerPool) Schedule(arg Task) bool {
 	select {
 	case wp.Tasks <- arg:
@@ -41,7 +49,8 @@ func (wp WorkerPool) Schedule(arg Task) bool {
 	}
 }
 
-func (wp WorkerPool) startWorker(id int) {
+func (wp *WorkerPool) startWorker() {
+	id := atomic.AddInt32(&wp.WorkersCount, 1)
 	for {
 		select {
 		case <-wp.SignalsChannel:

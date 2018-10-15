@@ -31,6 +31,7 @@ func (daemon CiakDaemon) initialize() error {
 			log.Warn("unable to schedule auto media conversion: ", err)
 			return err
 		}
+		daemon.ScheduleFileSystemMediaMonitor()
 	}
 	return nil
 }
@@ -49,8 +50,12 @@ func (daemon CiakDaemon) Stop() {
 	daemon.WorkerPool.Stop()
 }
 
-func (daemon CiakDaemon) Schedule(task worker.Task) {
-	daemon.WorkerPool.Schedule(task)
+func (daemon CiakDaemon) Schedule(task worker.Task) bool {
+	return daemon.WorkerPool.Schedule(task)
+}
+
+func (daemon CiakDaemon) ScheduleWithWorker(task worker.Task) bool {
+	return daemon.WorkerPool.ScheduleWithWorker(task)
 }
 
 func (daemon CiakDaemon) ScheduleFullMediaConversion() error {
@@ -71,12 +76,26 @@ func (daemon CiakDaemon) ScheduleFullMediaConversion() error {
 
 func (daemon CiakDaemon) ScheduleMediaConversion(media discovery.Media) {
 	log.Info("Scheduled ", media.Name, " for conversion")
-	daemon.Schedule(MediaConvertTask{
+	scheduled := daemon.Schedule(MediaConvertTask{
 		Encoder:        daemon.Encoder,
 		Media:          media,
 		OutputPath:     daemon.Conf.OutputPath,
 		DeleteOriginal: daemon.Conf.DeleteOriginal,
 		OverrideOld:    false,
 		OutputFormat:   "mp4",
+	})
+
+	if !scheduled {
+		log.Warn("Unable to schedule media conversion task: task queue is full, try to increase queue size or/and number of workers")
+	}
+}
+
+func (daemon CiakDaemon) ScheduleFileSystemMediaMonitor() {
+	daemon.ScheduleWithWorker(MediaFileSystemChangesTask{
+		MonitorPath: daemon.Conf.OutputPath,
+		OnFileCreateFn: func() {
+			log.Info("Detected changes on media folder, scheduling checks and conversions")
+			daemon.ScheduleFullMediaConversion()
+		},
 	})
 }
