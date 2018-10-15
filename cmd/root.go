@@ -47,6 +47,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&conf.DaemonConfig.DeleteOriginal, "delete-original-media", false, "if active delete the original media after conversion")
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.QueueSize, "queue-size", 1000, "daemon tasks queue size")
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.Workers, "workers", 2, "daemon number of workers")
+	rootCmd.PersistentFlags().BoolVar(&conf.ServerConfig.AuthenticationEnabled, "auth", false, "if active enable user authentication for the web server")
 }
 
 func Execute() {

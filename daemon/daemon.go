@@ -4,12 +4,13 @@ import (
 	"github.com/GaruGaru/ciak/config"
 	"github.com/GaruGaru/ciak/discovery"
 	"github.com/GaruGaru/ciak/encoding"
+	"github.com/GaruGaru/ciak/worker"
 	log "github.com/sirupsen/logrus"
 )
 
 type CiakDaemon struct {
 	Conf           config.CiakDaemonConfig
-	WorkerPool     WorkerPool
+	WorkerPool     worker.WorkerPool
 	MediaDiscovery discovery.MediaDiscovery
 	Encoder        encoding.MediaEncoder
 }
@@ -17,7 +18,7 @@ type CiakDaemon struct {
 func NewCiakDaemon(conf config.CiakDaemonConfig, MediaDiscovery discovery.MediaDiscovery, encoder encoding.MediaEncoder) CiakDaemon {
 	return CiakDaemon{
 		Conf:           conf,
-		WorkerPool:     NewWorkerPool(conf.Workers, conf.QueueSize),
+		WorkerPool:     worker.NewWorkerPool(conf.Workers, conf.QueueSize),
 		MediaDiscovery: MediaDiscovery,
 		Encoder:        encoder,
 	}
@@ -48,7 +49,7 @@ func (daemon CiakDaemon) Stop() {
 	daemon.WorkerPool.Stop()
 }
 
-func (daemon CiakDaemon) Schedule(task Task) {
+func (daemon CiakDaemon) Schedule(task worker.Task) {
 	daemon.WorkerPool.Schedule(task)
 }
 

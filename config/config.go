@@ -7,7 +7,8 @@ type CiakConfig struct {
 }
 
 type CiakServerConfig struct {
-	ServerBinding string
+	ServerBinding         string
+	AuthenticationEnabled bool
 }
 
 type CiakDaemonConfig struct {

@@ -1,4 +1,4 @@
-package daemon
+package worker
 
 type Task interface {
 	Run() error

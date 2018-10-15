@@ -1,4 +1,4 @@
-package daemon
+package worker
 
 import (
 	"github.com/sirupsen/logrus"

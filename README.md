@@ -36,6 +36,8 @@ You can configure Ciak using the command line flags
 
 * **--media** media files directory (default /data)
 
+* **--auth** enable web server authentication (default false) the authentication is configured by the env variables **CIAK_USERNAME** and **CIAK_PASSWORD**
+
 * **--auto-convert-media** automatically converts the medias to a streamable format (eg: mkv->mp4) (default false)
 
 * **--delete-original-media** delete original media after conversion to save up space (default false)
