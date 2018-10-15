@@ -40,7 +40,7 @@ func (s CiakServer) Run() error {
 }
 
 func (s CiakServer) initRouting(router *mux.Router) {
-	router.HandleFunc("/probe", ProbeHandler)
+	router.HandleFunc("/probe", common.ProbeHandler)
 	router.HandleFunc("/", s.MediaListHandler)
 	router.HandleFunc("/media/{media}", s.MediaStreamingHandler)
 	router.HandleFunc("/login", s.LoginPageHandler)

@@ -1,12 +1,21 @@
 package server
 
 import (
+	"fmt"
 	"github.com/GaruGaru/ciak/server/auth"
+	"github.com/GaruGaru/ciak/utils"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 	"html/template"
 	"net/http"
 )
+
+
+var UnauthenticatedUrls = []string{
+	"/login",
+	"/probe",
+	"/api/login",
+}
 
 type LoginPage struct {
 	Title string
@@ -54,4 +63,29 @@ func (s CiakServer) LoginPageHandler(w http.ResponseWriter, r *http.Request) {
 		Title: "Login",
 	})
 
+}
+
+func (s CiakServer) SessionAuthMiddleware(next http.Handler) http.Handler {
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if !s.Config.AuthenticationEnabled || utils.StringIn(r.URL.Path, UnauthenticatedUrls) {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		session, err := store.Get(r, "user")
+
+		if err != nil {
+			fmt.Println("Session error ", err)
+			return
+		}
+
+		if !session.IsNew {
+			next.ServeHTTP(w, r)
+		} else {
+			http.Redirect(w, r, "/login", http.StatusFound)
+		}
+
+	})
 }

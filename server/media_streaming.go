@@ -2,10 +2,18 @@ package server
 
 import (
 	"fmt"
+	"github.com/GaruGaru/ciak/utils"
 	"github.com/gorilla/mux"
 	"net/http"
 	"path/filepath"
 )
+
+var SupportedVideoFormats = []string{
+	"flac", "mp4", "m4a",
+	"mp3", "ogv", "ogm",
+	"ogg", "oga", "opus",
+	"webm", "wav",
+}
 
 func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -33,32 +41,6 @@ func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request
 	http.ServeFile(w, r, media.FilePath)
 }
 
-//func (s CiakServer) tryEncodeMedia(media discovery.Media) (discovery.Media, error) {
-//
-//	if !s.MediaEncoder.CanEncode(media.Extension) {
-//		return media, nil
-//	}
-//
-//	srcPath, srcName := filepath.Split(media.FilePath)
-//
-//	outFile := fmt.Sprintf("%s.%s", srcName, "mp4")
-//
-//	outPath := filepath.Join(srcPath, outFile)
-//
-//	os.Remove(outPath)
-//
-//	err := s.MediaEncoder.Encode(media.FilePath, outPath)
-//
-//	if err != nil {
-//		return discovery.Media{}, err
-//	}
-//
-//	return discovery.Media{
-//		Name:      srcName,
-//		Extension: "mp4",
-//		FilePath:  outPath,
-//		Size:      0,
-//	}, nil
-//
-//}
-//
+func IsExtensionPlayable(ext string) bool {
+	return utils.StringIn(ext, SupportedVideoFormats)
+}
