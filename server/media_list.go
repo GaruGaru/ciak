@@ -13,6 +13,8 @@ type MediaListPage struct {
 	NoMediasFound bool
 }
 
+var mediaListTemplate = template.Must( template.ParseFiles("static/base.html", "static/media-list.html"))
+
 func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 	mediaList, err := s.MediaDiscovery.Discover()
 
@@ -21,20 +23,18 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageTemplate, err := template.ParseFiles("static/base.html", "static/media-list.html")
-
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
 	}
 
-	page := MediaListPage{
+	mediaListPage := MediaListPage{
 		Title:         "Home",
 		MediaCount:    len(mediaList),
 		MediaList:     mediaList,
 		NoMediasFound: len(mediaList) == 0,
 	}
 
-	pageTemplate.Execute(w, page)
+	mediaListTemplate.Execute(w, mediaListPage)
 
 }

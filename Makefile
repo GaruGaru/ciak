@@ -24,7 +24,6 @@ deps:
 	dep ensure
 
 
-
 # DOCKER
 
 IMAGE=garugaru/ciak

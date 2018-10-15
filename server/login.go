@@ -21,6 +21,8 @@ type LoginPage struct {
 	Title string
 }
 
+var loginPageTemplate = template.Must( template.ParseFiles("static/base.html", "static/login.html"))
+
 var store = sessions.NewCookieStore([]byte("test"))
 
 func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
@@ -51,18 +53,9 @@ func (s CiakServer) createSession(w http.ResponseWriter, r *http.Request, user a
 }
 
 func (s CiakServer) LoginPageHandler(w http.ResponseWriter, r *http.Request) {
-
-	pageTemplate, err := template.ParseFiles("static/base.html", "static/login.html")
-
-	if err != nil {
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	pageTemplate.Execute(w, LoginPage{
+	loginPageTemplate.Execute(w, LoginPage{
 		Title: "Login",
 	})
-
 }
 
 func (s CiakServer) SessionAuthMiddleware(next http.Handler) http.Handler {
