@@ -2,6 +2,7 @@ language: go
 
 go:
   - 1.9.x
+  - 1.10
 
 before_install:
   - curl -L -s https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -o $GOPATH/bin/dep
@@ -11,4 +12,5 @@ install:
   - dep ensure
 
 script:
+  - go build
   - go test -race -v ./...
