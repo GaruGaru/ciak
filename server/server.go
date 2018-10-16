@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/GaruGaru/ciak/config"
-	"github.com/GaruGaru/ciak/discovery"
+	"github.com/GaruGaru/ciak/media/discovery"
 	"github.com/GaruGaru/ciak/server/auth"
 	"github.com/GaruGaru/ciak/server/common"
 	"github.com/gorilla/mux"
@@ -16,13 +16,7 @@ type CiakServer struct {
 	Authenticator  auth.Authenticator
 }
 
-func NewCiakServer(conf config.CiakServerConfig, discovery discovery.MediaDiscovery) CiakServer {
-	var authenticator auth.Authenticator = auth.NoOpAuthenticator{}
-
-	if conf.AuthenticationEnabled {
-		authenticator = auth.EnvAuthenticator{}
-	}
-
+func NewCiakServer(conf config.CiakServerConfig, discovery discovery.MediaDiscovery, authenticator auth.Authenticator) CiakServer {
 	return CiakServer{
 		Config:         conf,
 		MediaDiscovery: discovery,

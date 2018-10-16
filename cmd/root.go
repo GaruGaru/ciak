@@ -3,11 +3,11 @@ package cmd
 import (
 	"fmt"
 	"github.com/GaruGaru/ciak/config"
-	"github.com/GaruGaru/ciak/core"
 	"github.com/GaruGaru/ciak/daemon"
-	"github.com/GaruGaru/ciak/discovery"
-	"github.com/GaruGaru/ciak/encoding"
+	"github.com/GaruGaru/ciak/media/discovery"
+	"github.com/GaruGaru/ciak/media/encoding"
 	"github.com/GaruGaru/ciak/server"
+	"github.com/GaruGaru/ciak/server/auth"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -29,14 +29,14 @@ var rootCmd = &cobra.Command{
 
 		encoder := encoding.FFMpegEncoder{}
 
-		ciak := core.Ciak{
-			Config: conf,
-			Daemon: daemon.NewCiakDaemon(conf.DaemonConfig, mediaDiscovery, encoder),
-			Server: server.NewCiakServer(conf.ServerConfig, mediaDiscovery),
-		}
+		authenticator := auth.EnvAuthenticator{}
 
-		go ciak.Daemon.Start()
-		ciak.Server.Run()
+		daemon := daemon.NewCiakDaemon(conf.DaemonConfig, mediaDiscovery, encoder)
+
+		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator)
+
+		go daemon.Start()
+		server.Run()
 	},
 }
 

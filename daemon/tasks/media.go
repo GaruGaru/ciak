@@ -1,9 +1,9 @@
-package daemon
+package tasks
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/discovery"
-	"github.com/GaruGaru/ciak/encoding"
+	"github.com/GaruGaru/ciak/media/discovery"
+	"github.com/GaruGaru/ciak/media/encoding"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
@@ -21,7 +21,7 @@ type MediaConvertTask struct {
 func (mt MediaConvertTask) Run() error {
 
 	if mt.OutputFormat == "" {
-		mt.OutputFormat = "mp4"
+		return fmt.Errorf("empty output format provided")
 	}
 
 	log.Info("Converting media ", mt.Media.Name)
