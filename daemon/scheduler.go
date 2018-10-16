@@ -2,8 +2,8 @@ package daemon
 
 import (
 	"github.com/GaruGaru/ciak/daemon/tasks"
-	"github.com/GaruGaru/ciak/media/discovery"
 	"github.com/GaruGaru/ciak/daemon/worker"
+	"github.com/GaruGaru/ciak/media/discovery"
 	log "github.com/sirupsen/logrus"
 )
 

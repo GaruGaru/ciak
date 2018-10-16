@@ -10,7 +10,6 @@ import (
 	"net/http"
 )
 
-
 var UnauthenticatedUrls = []string{
 	"/login",
 	"/probe",
@@ -21,7 +20,7 @@ type LoginPage struct {
 	Title string
 }
 
-var loginPageTemplate = template.Must( template.ParseFiles("static/base.html", "static/login.html"))
+var loginPageTemplate = template.Must(template.ParseFiles("static/base.html", "static/login.html"))
 
 var store = sessions.NewCookieStore([]byte("test"))
 

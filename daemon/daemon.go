@@ -2,9 +2,9 @@ package daemon
 
 import (
 	"github.com/GaruGaru/ciak/config"
+	"github.com/GaruGaru/ciak/daemon/worker"
 	"github.com/GaruGaru/ciak/media/discovery"
 	"github.com/GaruGaru/ciak/media/encoding"
-	"github.com/GaruGaru/ciak/daemon/worker"
 	log "github.com/sirupsen/logrus"
 )
 
