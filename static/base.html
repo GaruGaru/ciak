@@ -7,13 +7,27 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">{{.Title}}</li>
-    </ol>
-</nav>
+<header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>{{.Title}}</strong>
+            </a>
+        </div>
+    </div>
+</header>
 
-<div>{{block "content" .}}No content provided{{end}}</div>
+<main role="main">
+{{block "content" .}}No content provided{{end}}
+</main>
 
+<footer class="text-muted fixed-bottom bg-dark py-3">
+    <div class="container">
+        <p class="float-right m-0">
+            <a href="#">Back to top</a>
+        </p>
+        <p class="m-0">Made with skills by <a href="https://github.com/GaruGaru" target="_blank">Garu</a></p>
+    </div>
+</footer>
 </body>
 </html>
