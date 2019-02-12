@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/utils"
+	"github.com/GaruGaru/ciak/internal/utils"
 	"github.com/gorilla/mux"
 	"net/http"
 	"path/filepath"

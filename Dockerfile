@@ -18,7 +18,7 @@ RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \
     -o /app .
 
-FROM garugaru/rpi-ffmpeg AS final
+FROM jrottenberg/ffmpeg:4.0-alpine AS final
 
 VOLUME /data
 

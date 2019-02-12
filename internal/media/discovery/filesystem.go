@@ -2,7 +2,8 @@ package discovery
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/utils"
+	"github.com/GaruGaru/ciak/internal/media/translator"
+	"github.com/GaruGaru/ciak/internal/utils"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path"
@@ -65,8 +66,9 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 
 func fileToMedia(fileInfo os.FileInfo, filePath string) Media {
 	extension := path.Ext(filePath)
+	name := strings.Replace(fileInfo.Name(), extension, "", 1)
 	return Media{
-		Name:      strings.Replace(fileInfo.Name(), extension, "", 1),
+		Name:      translator.Translate(name),
 		FilePath:  filePath,
 		Size:      fileInfo.Size(),
 		Extension: strings.TrimLeft(extension, "."),

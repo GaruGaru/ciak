@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/config"
-	"github.com/GaruGaru/ciak/daemon"
-	"github.com/GaruGaru/ciak/media/discovery"
-	"github.com/GaruGaru/ciak/media/encoding"
-	"github.com/GaruGaru/ciak/server"
-	"github.com/GaruGaru/ciak/server/auth"
+	"github.com/GaruGaru/ciak/internal/config"
+	"github.com/GaruGaru/ciak/internal/daemon"
+	"github.com/GaruGaru/ciak/internal/media/discovery"
+	"github.com/GaruGaru/ciak/internal/media/encoding"
+	"github.com/GaruGaru/ciak/internal/server"
+	"github.com/GaruGaru/ciak/internal/server/auth"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -31,11 +31,12 @@ var rootCmd = &cobra.Command{
 
 		authenticator := auth.EnvAuthenticator{}
 
-		daemon := daemon.NewCiakDaemon(conf.DaemonConfig, mediaDiscovery, encoder)
+		daemon := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
 
-		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator)
+		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon)
 
 		go daemon.Start()
+
 		server.Run()
 	},
 }

@@ -1,61 +1,39 @@
-VERSION=$(shell git rev-parse --short HEAD)
-DIST_DIR=./dist
+BIN_NAME=ciak
+BIN_OUTPUT=dist/${BIN_NAME}
 
-# GO
-
-.PHONY: fmt
 fmt:
 	go fmt ./...
 
-.PHONY: build
-build:
-	go build -o ${DIST_DIR}/ciak ciak.go
-
-.PHONY: run
-run:
-	go run ciak.go
-
-.PHONY: test
-test:
-	go test -v ./...
-
-.PHONY: deps
 deps:
-	dep ensure
+	go mod vendor
+	go mod verify
+
+build: fmt deps
+	go build -o ${BIN_OUTPUT}
 
 
-# DOCKER
+DOCKER_IMAGE=garugaru/meteo-api
+COMPOSE=docker/docker-compose.yml
+VERSION=$(shell git rev-parse --short HEAD)
+DOCKERFILE_ARMHF=docker/Dockerfile.armhf
 
-IMAGE=garugaru/ciak
-ARMHF_IMAGE=garugaru/rpi-ciak
-
-BASE_COMPOSE=docker/docker-compose.yml
-
-.PHONY: docker-build
-docker-build:
-	docker build -f docker/Dockerfile -t ${IMAGE}:latest -t ${IMAGE}:${VERSION} .
-
-.PHONY: docker-push-image
-docker-push-image: docker-build
-	docker push ${IMAGE}:${VERSION}
-
-.PHONY: docker-build-arm
-docker-build-arm:
-	docker build -f docker/Dockerfile.armhf -t ${ARMHF_IMAGE}:latest -t ${ARMHF_IMAGE}:${VERSION} .
-
-.PHONY: docker-push-image-arm
-docker-push-image-arm: docker-build-arm
-	docker push ${ARMHF_IMAGE}:${VERSION}
-
-.PHONY: docker-up
 docker-up:
-	docker-compose -f ${BASE_COMPOSE} up
+	docker-compose -f ${COMPOSE} up
 
-.PHONY: docker-upd
 docker-upd:
-	docker-compose -f ${BASE_COMPOSE} up -d
+	docker-compose -f ${COMPOSE} up -d
 
-
-.PHONY: docker-down
 docker-down:
-	docker-compose -f ${BASE_COMPOSE} down
+	docker-compose -f ${COMPOSE} down
+
+docker-build:
+	docker build -t ${DOCKER_IMAGE}:${VERSION} .
+
+docker-push: docker-build
+	docker push ${DOCKER_IMAGE}:${VERSION}
+
+docker-build-arm:
+	docker build -t ${DOCKER_IMAGE}-armhf:${VERSION} -f ${DOCKERFILE_ARMHF} .
+
+docker-push-arm: docker-build
+	docker push ${DOCKER_IMAGE}-armhf:${VERSION}

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/GaruGaru/ciak/media/discovery"
+	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"html/template"
 	"net/http"
 )

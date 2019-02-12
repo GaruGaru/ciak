@@ -6,4 +6,4 @@ services:
       - 8082:8082
     build:
       context: ../
-      dockerfile: docker/Dockerfile
+      dockerfile: ../Dockerfile

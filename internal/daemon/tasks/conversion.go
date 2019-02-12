@@ -2,8 +2,8 @@ package tasks
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/media/discovery"
-	"github.com/GaruGaru/ciak/media/encoding"
+	"github.com/GaruGaru/ciak/internal/media/discovery"
+	"github.com/GaruGaru/ciak/internal/media/encoding"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
@@ -16,6 +16,10 @@ type MediaConvertTask struct {
 	DeleteOriginal bool
 	OverrideOld    bool
 	OutputFormat   string
+}
+
+func (mt MediaConvertTask) Type() string {
+	panic("MediaConvertTask")
 }
 
 func (mt MediaConvertTask) Run() error {

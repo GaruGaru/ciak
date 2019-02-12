@@ -10,6 +10,10 @@ type MediaFileSystemChangesTask struct {
 	OnFileCreateFn func()
 }
 
+func (t MediaFileSystemChangesTask) Type() string {
+	panic("MediaFileSystemChangesTask")
+}
+
 func (t MediaFileSystemChangesTask) Run() error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
