@@ -1,25 +1,51 @@
 {{define "content"}}
-<section class="jumbotron text-center">
-    <div class="container">
-        <h1 class="jumbotron-heading">Your media library</h1>
-    </div>
-</section>
-<div class="container">
-    <div class="row">
-    {{if .NoMediasFound}}
-        <h1 class="text-center">No playable media found :(</h1>
-    {{end}}
-    {{range .MediaList}}
-        <div class="card col-lg-4 col-md-6 col-sm-12 mb-5">
-            <div class="card-body">
-                <h5 class="card-title">Filename: {{.Name}}</h5>
-                <p class="card-text">Video type: {{.Extension}}</p>
-                <a href="media/{{.Hash}}" class="btn btn-primary">
-                    View
-                </a>
-            </div>
-        </div>
-    {{end}}
-    </div>
-</div>
+	<section class="jumbotron text-center">
+		<div class="container">
+			<h1 class="jumbotron-heading">Your media library</h1>
+		</div>
+	</section>
+	<div class="container">
+		<div class="row">
+			{{if .NoMediasFound}}
+				<h1 class="text-center">No playable media found :(</h1>
+			{{end}}
+			{{range .PageMedia}}
+				<div class="card col-lg-4 col-md-6 col-sm-12 mb-5">
+					<div class="card-body">
+						<h5 class="card-title">Filename: {{.Media.Name}}</h5>
+						<p class="card-text">Video type: {{.Media.Extension}}</p>
+
+						<a href="media/{{.Media.Hash}}" class="btn btn-primary">
+							View
+						</a>
+
+						<button class="btn {{.TButtonClass}} feking-button" data-media="{{.Media.Hash}}">
+							Transfer
+						</button>
+
+					</div>
+				</div>
+			{{end}}
+		</div>
+	</div>
+
+	<script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll('button.feking-button');
+            buttons.forEach((el) => {
+                el.addEventListener("click", (e) => {
+                    const sender = e.target;
+                    const mediaId = sender.dataset['media'];
+
+                    fetch("/api/media/transfer?media=" + mediaId)
+                        .then(function (myJson) {
+                            console.log(JSON.stringify(myJson));
+                            debugger;
+                        });
+
+                });
+            });
+        });
+	</script>
+
 {{end}}

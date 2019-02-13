@@ -1,10 +1,12 @@
 package daemon
 
 import (
+	"fmt"
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/encoding"
 	"github.com/GaruGaru/duty/duty"
+	"github.com/GaruGaru/duty/pool"
 	"github.com/GaruGaru/duty/storage"
 	log "github.com/sirupsen/logrus"
 )
@@ -26,6 +28,9 @@ func New(conf config.CiakDaemonConfig, MediaDiscovery discovery.MediaDiscovery, 
 	dut := duty.New(store, duty.Options{
 		Workers:   conf.Workers,
 		QueueSize: conf.QueueSize,
+		ResultCallback: func(result pool.ScheduledTaskResult) {
+			fmt.Printf("task result %s: %s %s\n", result.ScheduledTask.ID, result.Status.State, result.Status.Message)
+		},
 	})
 
 	return CiakDaemon{
@@ -36,12 +41,12 @@ func New(conf config.CiakDaemonConfig, MediaDiscovery discovery.MediaDiscovery, 
 	}, nil
 }
 
-
 func (daemon CiakDaemon) Start() error {
 	log.WithFields(log.Fields{
 		"workers":    daemon.Conf.Workers,
 		"queue_size": daemon.Conf.QueueSize,
 	}).Info("Ciak daemon started")
+
 	err := daemon.Duty.Init()
 
 	if err != nil {

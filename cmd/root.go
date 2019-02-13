@@ -31,13 +31,26 @@ var rootCmd = &cobra.Command{
 
 		authenticator := auth.EnvAuthenticator{}
 
-		daemon := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
+		daemon, err := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
+
+		if err != nil {
+			panic(err)
+		}
 
 		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon)
 
-		go daemon.Start()
+		err = daemon.Start()
 
-		server.Run()
+		if err != nil {
+			panic(err)
+		}
+
+		err = server.Run()
+
+		if err != nil {
+			panic(err)
+		}
+
 	},
 }
 
@@ -49,6 +62,8 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.QueueSize, "queue-size", 1000, "daemon tasks queue size")
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.Workers, "workers", 2, "daemon number of workers")
 	rootCmd.PersistentFlags().BoolVar(&conf.ServerConfig.AuthenticationEnabled, "auth", false, "if active enable user authentication for the web server")
+	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.Database, "db", "/tmp/daemon.db", "database file used for persistence")
+	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.TransferDestination, "transfer-path", "", "path where to transfer media")
 }
 
 func Execute() {

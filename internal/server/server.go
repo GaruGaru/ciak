@@ -42,6 +42,7 @@ func (s CiakServer) initRouting(router *mux.Router) {
 	router.HandleFunc("/media/{media}", s.MediaStreamingHandler)
 	router.HandleFunc("/login", s.LoginPageHandler)
 	router.HandleFunc("/api/login", s.LoginApiHandler)
+	router.HandleFunc("/api/media/transfer", s.MediaTransferApi)
 	router.Use(common.LoggingMiddleware)
 	router.Use(s.SessionAuthMiddleware)
 }

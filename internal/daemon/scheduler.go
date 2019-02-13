@@ -1,11 +1,17 @@
 package daemon
 
 import (
+	"fmt"
 	"github.com/GaruGaru/ciak/internal/daemon/tasks"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/duty/task"
 	log "github.com/sirupsen/logrus"
+	"path/filepath"
 )
+
+func (daemon CiakDaemon) Task(id string) (task.ScheduledTask, error) {
+	return daemon.Duty.Get(id)
+}
 
 func (daemon CiakDaemon) Schedule(task task.Task) error {
 	_, err := daemon.Duty.Enqueue(task)
@@ -19,7 +25,8 @@ func (daemon CiakDaemon) ScheduleWithID(id string, task task.Task) error {
 
 func (daemon CiakDaemon) ScheduleMediaTransfer(media discovery.Media) error {
 
-	output := daemon.Conf.OutputPath
+
+	output := filepath.Join(daemon.Conf.OutputPath, fmt.Sprintf("%s.%s", media.Name, media.Extension))
 
 	transfer := tasks.TransferTask{
 		Source:      media.FilePath,
