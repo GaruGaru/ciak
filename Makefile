@@ -13,6 +13,7 @@ build: fmt deps
 
 
 DOCKER_IMAGE=garugaru/ciak
+DOCKER_IMAGE_ARM=${DOCKER_IMAGE}-armhf
 COMPOSE=docker/docker-compose.yml
 VERSION=$(shell git rev-parse --short HEAD)
 DOCKERFILE_ARMHF=Dockerfile.armhf
@@ -33,7 +34,10 @@ docker-push: docker-build
 	docker push ${DOCKER_IMAGE}:${VERSION}
 
 docker-build-arm:
-	docker build -t ${DOCKER_IMAGE}-armhf:${VERSION} -f ${DOCKERFILE_ARMHF} .
+	docker build -t ${DOCKER_IMAGE_ARM}:${VERSION} -f ${DOCKERFILE_ARMHF} .
 
 docker-push-arm: docker-build-arm
-	docker push ${DOCKER_IMAGE}-armhf:${VERSION}
+	docker push ${DOCKER_IMAGE_ARM}:${VERSION}
+	docker manifest create ${DOCKER_IMAGE_ARM} ${DOCKER_IMAGE_ARM}:${VERSION}
+	docker manifest annotate ${DOCKER_IMAGE_ARM} ${DOCKER_IMAGE_ARM}:${VERSION} --os linux --arch arm
+	docker manifest push ${DOCKER_IMAGE_ARM}
