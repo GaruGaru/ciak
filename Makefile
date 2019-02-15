@@ -41,7 +41,7 @@ docker-push-arm:
 	docker build -t ${DOCKER_IMAGE}:arm-latest -f ${DOCKERFILE_ARMHF} .
 	docker push ${DOCKER_IMAGE}:arm-latest
 
-docker-create-manifests: docker-push docker-push-arm
+docker-push-all: docker-push docker-push-arm
 	docker manifest create ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest
 	docker manifest annotate ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest --os linux --arch arm
 	docker manifest push ${DOCKER_IMAGE}:latest
