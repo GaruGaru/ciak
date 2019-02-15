@@ -29,7 +29,8 @@ func NewCiakServer(conf config.CiakServerConfig, discovery discovery.MediaDiscov
 
 func (s CiakServer) Run() error {
 	log.WithFields(log.Fields{
-		"bind": s.Config.ServerBinding,
+		"bind":    s.Config.ServerBinding,
+		"version": "0.0.1",
 	}).Info("Ciak server started")
 	router := mux.NewRouter()
 	s.initRouting(router)

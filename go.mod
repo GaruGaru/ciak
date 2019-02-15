@@ -4,6 +4,7 @@ require (
 	github.com/GaruGaru/duty v0.0.0-20190213134635-eef338d3b083
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gorilla/mux v1.6.2
+	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.1.3
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.3.0
