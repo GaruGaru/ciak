@@ -42,9 +42,9 @@ docker-push-arm: docker-build-arm
 	docker push ${DOCKER_IMAGE}:arm-latest
 
 docker-push-all: docker-push docker-push-arm
-	docker manifest create --amend ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:arm-${VERSION} ${DOCKER_IMAGE}:arm-latest
-	docker manifest annotate ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-${VERSION} --os linux --arch arm
-	docker manifest annotate ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest --os linux --arch arm
+	docker manifest create --amend ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:arm-${VERSION} ${DOCKER_IMAGE}:arm-latest
+	docker manifest annotate ${DOCKER_IMAGE} ${DOCKER_IMAGE}:arm-${VERSION} --os linux --arch arm
+	docker manifest annotate ${DOCKER_IMAGE} ${DOCKER_IMAGE}:arm-latest --os linux --arch arm
 	docker manifest push ${DOCKER_IMAGE}:latest
 
 docker-create-manifest:
