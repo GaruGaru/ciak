@@ -43,6 +43,8 @@ docker-push-all: docker-build-arm docker-build
 	docker push ${DOCKER_IMAGE}:arm
 	docker push ${DOCKER_IMAGE}:arm-${VERSION}
 
+	docker manifest create garugaru/ciak ${DOCKER_IMAGE}:amd64 ${DOCKER_IMAGE}:amd64-${VERSION} ${DOCKER_IMAGE}:arm ${DOCKER_IMAGE}:arm-${VERSION}
+
 	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm
 	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm-${VERSION}
 	docker manifest push garugaru/ciak
