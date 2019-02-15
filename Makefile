@@ -36,8 +36,8 @@ docker-push: docker-build
 docker-build-arm:
 	docker build -t ${DOCKER_IMAGE_ARM}:${VERSION} -f ${DOCKERFILE_ARMHF} .
 
-docker-push-arm: docker-build-arm
+docker-push-arm:
 	#docker push ${DOCKER_IMAGE_ARM}:${VERSION}
-	#docker manifest create --amend ${DOCKER_IMAGE_ARM} ${DOCKER_IMAGE_ARM}:${VERSION}
+	docker manifest create --amend ${DOCKER_IMAGE_ARM} ${DOCKER_IMAGE_ARM}:${VERSION}
 	docker manifest annotate ${DOCKER_IMAGE_ARM} ${DOCKER_IMAGE_ARM}:${VERSION} --os linux --arch arm
 	docker manifest push ${DOCKER_IMAGE_ARM}
