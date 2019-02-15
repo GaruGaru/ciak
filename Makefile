@@ -12,7 +12,7 @@ build: fmt deps
 	go build -o ${BIN_OUTPUT}
 
 
-DOCKER_IMAGE=garugaru/meteo-api
+DOCKER_IMAGE=garugaru/ciak
 COMPOSE=docker/docker-compose.yml
 VERSION=$(shell git rev-parse --short HEAD)
 DOCKERFILE_ARMHF=docker/Dockerfile.armhf
@@ -35,5 +35,5 @@ docker-push: docker-build
 docker-build-arm:
 	docker build -t ${DOCKER_IMAGE}-armhf:${VERSION} -f ${DOCKERFILE_ARMHF} .
 
-docker-push-arm: docker-build
+docker-push-arm: docker-build-arm
 	docker push ${DOCKER_IMAGE}-armhf:${VERSION}

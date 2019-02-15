@@ -19,7 +19,6 @@ func (t TransferTask) Type() string {
 func (t TransferTask) Run() error {
 	log.Infof("Copying %s to %s", t.Source, t.Destination)
 
-	time.Sleep(1*time.Minute)
 
 	sourceHash, err := files.HashFile(t.Source)
 
