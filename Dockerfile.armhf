@@ -18,13 +18,13 @@ RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \
     -o /app .
 
-FROM jrottenberg/ffmpeg:4.0-alpine AS final
+FROM garugaru/rpi-ffmpeg AS final
 
 RUN mkdir /data && mkdir /transfer
 
-VOLUME /transfer
-
 VOLUME /data
+
+VOLUME /transfer
 
 COPY static/ /static
 

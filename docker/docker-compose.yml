@@ -2,8 +2,6 @@ version: "3.3"
 services:
   ciak:
     image: garugaru/ciak
+    build: ../
     ports:
       - 8082:8082
-    build:
-      context: ../
-      dockerfile: ../Dockerfile

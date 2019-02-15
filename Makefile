@@ -15,7 +15,7 @@ build: fmt deps
 DOCKER_IMAGE=garugaru/ciak
 COMPOSE=docker/docker-compose.yml
 VERSION=$(shell git rev-parse --short HEAD)
-DOCKERFILE_ARMHF=docker/Dockerfile.armhf
+DOCKERFILE_ARMHF=Dockerfile.armhf
 
 docker-up:
 	docker-compose -f ${COMPOSE} up
