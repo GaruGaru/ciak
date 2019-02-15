@@ -28,7 +28,7 @@ docker-down:
 	docker-compose -f ${COMPOSE} down
 
 docker-build:
-	docker build -t ${DOCKER_IMAGE}:latest -t ${DOCKER_IMAGE}:${VERSION} .
+	docker build -t ${DOCKER_IMAGE}:amd64 -t ${DOCKER_IMAGE}:amd64-${VERSION} .
 
 docker-push: docker-build
 	docker push ${DOCKER_IMAGE}:amd64-${VERSION}
@@ -38,15 +38,12 @@ docker-build-arm:
 	docker build -t ${DOCKER_IMAGE}:arm -t ${DOCKER_IMAGE}:arm-${VERSION} -f ${DOCKERFILE_ARMHF} .
 
 docker-push-all: docker-build-arm docker-build
-	docker push ${DOCKER_IMAGE}:amd64-${VERSION}
 	docker push ${DOCKER_IMAGE}:amd64
 	docker push ${DOCKER_IMAGE}:arm
-	docker push ${DOCKER_IMAGE}:arm-${VERSION}
 
-	docker manifest create garugaru/ciak ${DOCKER_IMAGE}:amd64 ${DOCKER_IMAGE}:amd64-${VERSION} ${DOCKER_IMAGE}:arm ${DOCKER_IMAGE}:arm-${VERSION}
+	docker manifest create --amend garugaru/ciak ${DOCKER_IMAGE}:amd64 ${DOCKER_IMAGE}:arm
 
 	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm
-	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm-${VERSION}
 	docker manifest push garugaru/ciak
 
 docker-create-manifest:
