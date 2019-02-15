@@ -31,17 +31,21 @@ docker-build:
 	docker build -t ${DOCKER_IMAGE}:latest -t ${DOCKER_IMAGE}:${VERSION} .
 
 docker-push: docker-build
-	docker push ${DOCKER_IMAGE}:${VERSION}
-	docker push ${DOCKER_IMAGE}:latest
+	docker push ${DOCKER_IMAGE}:amd64-${VERSION}
+	docker push ${DOCKER_IMAGE}:amd64
 
 docker-build-arm:
-	docker build -t ${DOCKER_IMAGE}:arm-latest -t ${DOCKER_IMAGE}:arm-${VERSION} -f ${DOCKERFILE_ARMHF} .
+	docker build -t ${DOCKER_IMAGE}:arm -t ${DOCKER_IMAGE}:arm-${VERSION} -f ${DOCKERFILE_ARMHF} .
 
 docker-push-all: docker-build-arm docker-build
-	docker manifest create --amend ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:arm-${VERSION} ${DOCKER_IMAGE}:arm-latest
-	docker manifest annotate ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-${VERSION} --os linux --arch arm
-	docker manifest annotate ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest --os linux --arch arm
-	docker manifest push ${DOCKER_IMAGE}:latest
+	docker push ${DOCKER_IMAGE}:amd64-${VERSION}
+	docker push ${DOCKER_IMAGE}:amd64
+	docker push ${DOCKER_IMAGE}:arm
+	docker push ${DOCKER_IMAGE}:arm-${VERSION}
+
+	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm
+	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm-${VERSION}
+	docker manifest push garugaru/ciak
 
 docker-create-manifest:
 	docker manifest create ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest
