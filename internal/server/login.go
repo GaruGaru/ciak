@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/server/auth"
 	"github.com/GaruGaru/ciak/internal/utils"
+	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 	"html/template"
@@ -22,7 +23,7 @@ type LoginPage struct {
 
 var loginPageTemplate = template.Must(template.ParseFiles("static/base.html", "static/login.html"))
 
-var store = sessions.NewCookieStore([]byte("ciak"))
+var store = sessions.NewCookieStore([]byte(securecookie.GenerateRandomKey(10)))
 
 func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
 
