@@ -20,6 +20,8 @@ RUN CGO_ENABLED=0 go build \
 
 FROM jrottenberg/ffmpeg:4.0-alpine AS final
 
+WORKDIR /
+
 RUN mkdir /data && mkdir /transfer
 
 VOLUME /transfer

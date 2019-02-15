@@ -20,6 +20,8 @@ RUN CGO_ENABLED=0 go build \
 
 FROM garugaru/rpi-ffmpeg AS final
 
+WORKDIR /
+
 RUN mkdir /data && mkdir /transfer
 
 VOLUME /data
