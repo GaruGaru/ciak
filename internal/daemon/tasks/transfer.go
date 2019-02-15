@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/pkg/files"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 type TransferTask struct {
