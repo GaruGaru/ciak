@@ -12,7 +12,7 @@ build: fmt deps
 	go build -o ${BIN_OUTPUT}
 
 
-DOCKER_IMAGE=garugaru/ciak
+DOCKER_IMAGE=garugaru/ciakk
 DOCKER_IMAGE_ARM=${DOCKER_IMAGE}:armhf
 COMPOSE=docker/docker-compose.yml
 VERSION=$(shell git rev-parse --short HEAD)
@@ -41,10 +41,10 @@ docker-push-all: docker-build-arm docker-build
 	docker push ${DOCKER_IMAGE}:amd64
 	docker push ${DOCKER_IMAGE}:arm
 
-	docker manifest create --amend garugaru/ciak ${DOCKER_IMAGE}:amd64 ${DOCKER_IMAGE}:arm
+	docker manifest create --amend ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:amd64 ${DOCKER_IMAGE}:arm
 
-	docker manifest annotate --arch arm garugaru/ciak ${DOCKER_IMAGE}:arm
-	docker manifest push garugaru/ciak
+	docker manifest annotate --arch arm ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:arm
+	docker manifest push ${DOCKER_IMAGE}:${VERSION}
 
 docker-create-manifest:
 	docker manifest create ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:arm-latest
