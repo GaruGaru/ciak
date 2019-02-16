@@ -1,7 +1,6 @@
 package daemon
 
 import (
-	"fmt"
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/encoding"
@@ -29,7 +28,6 @@ func New(conf config.CiakDaemonConfig, MediaDiscovery discovery.MediaDiscovery, 
 		Workers:   conf.Workers,
 		QueueSize: conf.QueueSize,
 		ResultCallback: func(result pool.ScheduledTaskResult) {
-			fmt.Printf("task result %s: %s %s\n", result.ScheduledTask.ID, result.Status.State, result.Status.Message)
 		},
 	})
 

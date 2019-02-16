@@ -3,7 +3,6 @@ package server
 import (
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/duty/task"
-	"github.com/sirupsen/logrus"
 	"html/template"
 	"net/http"
 )
@@ -37,7 +36,7 @@ func (p PageMedia) TButtonClass() string {
 
 }
 
-var mediaListTemplate = template.Must(template.ParseFiles("static/base.html", "static/media-list.html"))
+
 
 func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -52,10 +51,7 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 	pageMediaList := make([]PageMedia, 0)
 
 	for _, media := range mediaList {
-		transferResult, err := s.Daemon.Task(media.Hash())
-		if err != nil {
-			logrus.Error(err)
-		}
+		transferResult, _ := s.Daemon.Task(media.Hash())
 
 		pageMediaList = append(pageMediaList, PageMedia{
 			Media:          media,
@@ -71,6 +67,8 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 		NoMediasFound:   len(pageMediaList) == 0,
 		TransferEnabled: s.Daemon.Conf.TransferDestination != "",
 	}
+
+	var mediaListTemplate = template.Must(template.ParseFiles("static/base.html", "static/media-list.html"))
 
 	_ = mediaListTemplate.Execute(w, mediaListPage)
 

@@ -12,7 +12,7 @@ build: fmt deps
 	go build -o ${BIN_OUTPUT}
 
 
-DOCKER_IMAGE=garugaru/ciakk
+DOCKER_IMAGE=garugaru/ciak
 DOCKER_IMAGE_ARM=${DOCKER_IMAGE}:armhf
 COMPOSE=docker/docker-compose.yml
 VERSION=$(shell git rev-parse --short HEAD)

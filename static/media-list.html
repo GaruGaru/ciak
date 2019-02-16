@@ -1,35 +1,43 @@
 {{define "content"}}
-	<section class="jumbotron text-center">
-		<div class="container">
-			<h1 class="jumbotron-heading">Your media library</h1>
-		</div>
-	</section>
-	<div class="container">
-		<div class="row">
-			{{if .NoMediasFound}}
-				<h1 class="text-center">No playable media found :(</h1>
-			{{end}}
-			{{range .PageMedia}}
-				<div class="card col-lg-4 col-md-6 col-sm-12 mb-5">
-					<div class="card-body">
-						<h5 class="card-title">Filename: {{.Media.Name}}</h5>
-						<p class="card-text">Video type: {{.Media.Extension}}</p>
+    {{ $ShowTransfer := .TransferEnabled }}
 
-						<a href="media/{{.Media.Hash}}" class="btn btn-primary">
-							View
-						</a>
+    <section class="jumbotron text-center">
+        <h1 class="jumbotron-heading">Your media library</h1>
+    </section>
+    <div class="container">
+        <div class="row">
+            {{if .NoMediasFound}}
+                <h1 class="text-center">No playable media found :(</h1>
+            {{end}}
 
-						<button class="btn {{.TButtonClass}} feking-button" data-media="{{.Media.Hash}}">
-							Transfer
-						</button>
+            {{range .PageMedia}}
 
-					</div>
-				</div>
-			{{end}}
-		</div>
-	</div>
 
-	<script type="text/javascript">
+
+
+                <div class="card col-lg-4 col-md-6 col-sm-12 mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Filename: {{.Media.Name}}</h5>
+                        <p class="card-text">Video type: {{.Media.Extension}}</p>
+
+                        <a href="media/{{.Media.Hash}}" class="btn btn-primary">
+                            View
+                        </a>
+
+                        {{if $ShowTransfer}}
+                            <button class="btn {{.TButtonClass}} feking-button" data-media="{{.Media.Hash}}">
+                                Transfer
+                            </button>
+                        {{end}}
+
+
+                    </div>
+                </div>
+            {{end}}
+        </div>
+    </div>
+
+    <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
             const buttons = document.querySelectorAll('button.feking-button');
             buttons.forEach((el) => {
@@ -39,13 +47,13 @@
 
                     fetch("/api/media/transfer?media=" + mediaId)
                         .then(function (myJson) {
-                            console.log(JSON.stringify(myJson));
-                            debugger;
+                            console.log(myJson);
+                            location.reload();
                         });
 
                 });
             });
         });
-	</script>
+    </script>
 
 {{end}}

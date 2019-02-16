@@ -1,7 +1,6 @@
 package tasks
 
 import (
-	"fmt"
 	"github.com/GaruGaru/ciak/pkg/files"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,7 +23,7 @@ func (t TransferTask) Run() error {
 		return err
 	}
 
-	fmt.Println("File copied successfully")
+	log.Infof("File %s copied to %s", t.Source, t.Destination)
 
 	return nil
 }
