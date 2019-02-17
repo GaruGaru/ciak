@@ -28,6 +28,8 @@ VOLUME /transfer
 
 VOLUME /data
 
+VOLUME /db
+
 COPY static/ /static
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

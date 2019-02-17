@@ -52,3 +52,5 @@ You can configure Ciak using the command line flags
 * **--transfer-path** enable transfer feature that allows media copy from a device to another using the web ui 
 
 * **--omdb-api-key** omdbapi.com api key used for movie metadata retrieving 
+
+* **--db** database file path (default /tmp/ciak_daemon.db)
