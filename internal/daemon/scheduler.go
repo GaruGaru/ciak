@@ -25,7 +25,6 @@ func (daemon CiakDaemon) ScheduleWithID(id string, task task.Task) error {
 
 func (daemon CiakDaemon) ScheduleMediaTransfer(media discovery.Media) error {
 
-
 	output := filepath.Join(daemon.Conf.TransferDestination, fmt.Sprintf("%s.%s", media.Name, media.Extension))
 
 	transfer := tasks.TransferTask{

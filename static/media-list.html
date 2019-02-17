@@ -6,19 +6,24 @@
     </section>
     <div class="container">
         <div class="row">
+
             {{if .NoMediasFound}}
                 <h1 class="text-center">No playable media found :(</h1>
             {{end}}
 
             {{range .PageMedia}}
 
+                <div class="card col-md-3 m-1" align="center">
 
+                <div class="card-body" align="center">
 
+                        {{ if .Cover }}
+                            <img class="rounded img-fluid" alt="Art" src="{{ .Cover }}">
+                        {{end}}
 
-                <div class="card col-lg-4 col-md-6 col-sm-12 mb-5">
-                    <div class="card-body">
-                        <h5 class="card-title">Filename: {{.Media.Name}}</h5>
-                        <p class="card-text">Video type: {{.Media.Extension}}</p>
+                        <h5 class="card-title">{{.Media.Name}}</h5>
+                        <p class="card-text">Type: {{.Media.Extension}}</p>
+                        <p class="card-text">Size: {{.Media.Size}} mb</p>
 
                         <a href="media/{{.Media.Hash}}" class="btn btn-primary">
                             View

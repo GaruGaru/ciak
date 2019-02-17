@@ -64,4 +64,3 @@ func CopyFile(src, dst string) error {
 	}
 	return os.Chmod(dst, srcinfo.Mode())
 }
-

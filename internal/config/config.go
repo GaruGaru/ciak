@@ -9,6 +9,7 @@ type CiakConfig struct {
 type CiakServerConfig struct {
 	ServerBinding         string
 	AuthenticationEnabled bool
+	OmdbApiKey            string
 }
 
 type CiakDaemonConfig struct {

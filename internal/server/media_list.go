@@ -10,6 +10,7 @@ import (
 type PageMedia struct {
 	Media          discovery.Media
 	TransferStatus task.ScheduledTask
+	Cover          string
 }
 
 type MediaListPage struct {
@@ -33,14 +34,21 @@ func (p PageMedia) TButtonClass() string {
 	default:
 		return "btn-primary"
 	}
-
 }
 
-
+func mediaToTitlesList(media []discovery.Media) []string {
+	titles := make([]string, 0)
+	for _, m := range media {
+		titles = append(titles, m.Name)
+	}
+	return titles
+}
 
 func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 
 	mediaList, err := s.MediaDiscovery.Discover()
+
+	mediaMetadata, err := s.OmbdClient.ByTitleBulk(mediaToTitlesList(mediaList)...)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -51,11 +59,19 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 	pageMediaList := make([]PageMedia, 0)
 
 	for _, media := range mediaList {
+
+		metadata := mediaMetadata[media.Name]
+
+		if metadata.Poster == "" {
+			metadata.Poster = "https://via.placeholder.com/300"
+		}
+
 		transferResult, _ := s.Daemon.Task(media.Hash())
 
 		pageMediaList = append(pageMediaList, PageMedia{
 			Media:          media,
 			TransferStatus: transferResult,
+			Cover:          metadata.Poster,
 		})
 
 	}

@@ -24,12 +24,12 @@ func Translate(name string) string {
 		name = strings.Replace(name, rmv, "", -1)
 	}
 
-	allString := nameRegex.FindAllString(name, 1)
+	allString := nameRegex.FindStringSubmatch(name)
 
 	if len(allString) == 0 {
 		return strings.TrimSpace(name)
 	}
 
-	return strings.TrimSpace(allString[0])
+	return strings.TrimSpace(allString[1])
 
 }

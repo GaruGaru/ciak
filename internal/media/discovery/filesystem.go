@@ -66,11 +66,12 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 
 func fileToMedia(fileInfo os.FileInfo, filePath string) Media {
 	extension := path.Ext(filePath)
+
 	name := strings.Replace(fileInfo.Name(), extension, "", 1)
 	return Media{
 		Name:      translator.Translate(name),
 		FilePath:  filePath,
-		Size:      fileInfo.Size(),
+		Size:      fileInfo.Size() / 1024 / 1024,
 		Extension: strings.TrimLeft(extension, "."),
 	}
 }

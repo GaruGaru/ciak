@@ -8,6 +8,7 @@ import (
 	"github.com/GaruGaru/ciak/internal/media/encoding"
 	"github.com/GaruGaru/ciak/internal/server"
 	"github.com/GaruGaru/ciak/internal/server/auth"
+	"github.com/GaruGaru/ciak/pkg/omdb"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -31,13 +32,15 @@ var rootCmd = &cobra.Command{
 
 		authenticator := auth.EnvAuthenticator{}
 
+		omdbClient := omdb.New(conf.ServerConfig.OmdbApiKey)
+
 		daemon, err := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
 
 		if err != nil {
 			panic(err)
 		}
 
-		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon)
+		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon, omdbClient)
 
 		err = daemon.Start()
 
@@ -64,6 +67,8 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&conf.ServerConfig.AuthenticationEnabled, "auth", false, "if active enable user authentication for the web server")
 	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.Database, "db", "/tmp/daemon.db", "database file used for persistence")
 	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.TransferDestination, "transfer-path", "", "path where to transfer media")
+	rootCmd.PersistentFlags().StringVar(&conf.ServerConfig.OmdbApiKey, "omdb-api-key", "", "omdb movie metadata api key")
+
 }
 
 func Execute() {
