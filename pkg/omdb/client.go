@@ -1,6 +1,5 @@
 package omdb
 
-
 type Client interface {
 	ByTitleBulk(titles ...string) (map[string]Movie, error)
 	ByTitle(title string) (Movie, bool, error)
@@ -21,4 +20,3 @@ func (NoOpClient) ByTitleBulk(titles ...string) (map[string]Movie, error) {
 func (NoOpClient) ByTitle(title string) (Movie, bool, error) {
 	return Movie{}, false, nil
 }
-

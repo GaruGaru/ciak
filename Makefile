@@ -8,6 +8,9 @@ deps:
 	go mod vendor
 	go mod verify
 
+test:
+	go test ./...
+
 build: fmt deps
 	go build -o ${BIN_OUTPUT}
 

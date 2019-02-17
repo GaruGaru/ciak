@@ -10,7 +10,7 @@ func TestDecoderNameWithTorrentNotation(t *testing.T) {
 
 	output := Translate(input)
 
-	expectedOutput := "Godzilla 2014"
+	expectedOutput := "Godzilla"
 
 	if output != expectedOutput {
 		t.Fatalf("expected %s as decoded output but got %s", expectedOutput, output)
@@ -24,7 +24,7 @@ func TestDecoderSimpleName(t *testing.T) {
 
 	output := Translate(input)
 
-	expectedOutput := "Godzilla 2014"
+	expectedOutput := "Godzilla"
 
 	if output != expectedOutput {
 		t.Fatalf("expected %s as decoded output but got %s", expectedOutput, output)
