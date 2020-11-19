@@ -11,7 +11,7 @@ type MediaFileSystemChangesTask struct {
 }
 
 func (t MediaFileSystemChangesTask) Type() string {
-	panic("MediaFileSystemChangesTask")
+	return "MediaFileSystemChangesTask"
 }
 
 func (t MediaFileSystemChangesTask) Run() error {

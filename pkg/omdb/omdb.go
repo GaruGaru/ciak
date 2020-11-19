@@ -46,7 +46,11 @@ func (o *Omdb) ByTitleBulk(titles ...string) (map[string]Movie, error) {
 	for _, title := range titles {
 		go func(t string) {
 			defer wg.Done()
-			movie, _, _ := o.ByTitle(t)
+			movie, _, err := o.ByTitle(t)
+			if err != nil {
+				logrus.Warnf("unable to get title metadata for %s: %s", t, err.Error())
+			}
+
 			results <- MovieByTitle{
 				Title: t,
 				Movie: movie,
