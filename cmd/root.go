@@ -65,7 +65,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.QueueSize, "queue-size", 1000, "daemon tasks queue size")
 	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.Workers, "workers", 2, "daemon number of workers")
 	rootCmd.PersistentFlags().BoolVar(&conf.ServerConfig.AuthenticationEnabled, "auth", false, "if active enable user authentication for the web server")
-	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.Database, "db", "/tmp/ciak_daemon.db", "database file used for persistence")
+	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.Database, "db", "ciak_daemon.db", "database file used for persistence")
 	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.TransferDestination, "transfer-path", "", "path where to transfer media")
 	rootCmd.PersistentFlags().StringVar(&conf.ServerConfig.OmdbApiKey, "omdb-api-key", "", "omdb movie metadata api key")
 

@@ -12,8 +12,9 @@ import (
 )
 
 type Omdb struct {
-	ApiKey string
-	Cache  Cache
+	ApiKey     string
+	Cache      Cache
+	httpClient *http.Client
 }
 
 type MovieByTitle struct {
@@ -28,6 +29,9 @@ func New(apiKey string) Client {
 	return &Omdb{
 		ApiKey: apiKey,
 		Cache:  NewMemoryCache(),
+		httpClient: &http.Client{
+			Timeout: 10 * time.Second,
+		},
 	}
 }
 
@@ -72,11 +76,8 @@ func (o *Omdb) ByTitle(title string) (Movie, bool, error) {
 	}
 
 	apiUrl := fmt.Sprintf("http://www.omdbapi.com/?apikey=%s&t=%s", o.ApiKey, url.QueryEscape(normalizeTitle(title)))
-	client := &http.Client{
-		Timeout: 5 * time.Second,
-	}
 
-	resp, err := client.Get(apiUrl)
+	resp, err := o.httpClient.Get(apiUrl)
 
 	if err != nil {
 		return Movie{}, false, err

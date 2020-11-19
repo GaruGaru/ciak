@@ -13,7 +13,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 
 		log.WithFields(log.Fields{
-			"duration": time.Since(startTime).Nanoseconds() / 1000000,
+			"duration": time.Since(startTime).Milliseconds(),
 		}).Info(r.RequestURI)
 
 	})
