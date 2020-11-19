@@ -23,7 +23,7 @@ Install ciak
 Launch the media server (on 0.0.0.0:8082)
 
 
-    ciak --data=<your/media/directory>
+    ciak --media=<your/media/directory>
 
 
 
