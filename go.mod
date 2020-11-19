@@ -1,5 +1,7 @@
 module github.com/GaruGaru/ciak
 
+go 1.15
+
 require (
 	github.com/GaruGaru/duty v0.0.0-20190213134635-eef338d3b083
 	github.com/fsnotify/fsnotify v1.4.7

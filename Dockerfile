@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.11
+ARG GO_VERSION=1.15
 ARG APP_NAME="ciak"
 ARG PORT=8082
 
@@ -18,7 +18,7 @@ RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \
     -o /app .
 
-FROM jrottenberg/ffmpeg:4.0-alpine AS final
+FROM linuxserver/ffmpeg
 
 WORKDIR /
 

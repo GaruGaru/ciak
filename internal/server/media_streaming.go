@@ -25,11 +25,6 @@ func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err != nil {
-		w.Write([]byte(err.Error()))
-		return
-	}
-
 	if IsExtensionPlayable(media.Extension) {
 		w.Header().Set("Accept-Ranges", "bytes")
 		w.Header().Set("Content-Type", "video/"+media.Extension)

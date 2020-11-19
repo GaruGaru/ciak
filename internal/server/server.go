@@ -12,6 +12,10 @@ import (
 	"net/http"
 )
 
+const (
+	serverVersion = "0.0.2"
+)
+
 type CiakServer struct {
 	Config         config.CiakServerConfig
 	MediaDiscovery discovery.MediaDiscovery
@@ -38,8 +42,9 @@ func NewCiakServer(
 func (s CiakServer) Run() error {
 	log.WithFields(log.Fields{
 		"bind":    s.Config.ServerBinding,
-		"version": "0.0.2",
+		"version": serverVersion,
 	}).Info("Ciak server started")
+
 	router := mux.NewRouter()
 	s.initRouting(router)
 	return http.ListenAndServe(s.Config.ServerBinding, router)
