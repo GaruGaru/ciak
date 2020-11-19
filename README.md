@@ -1,8 +1,11 @@
 # Ciak is a lightweight media server written in go
 
-[![Build Status](https://travis-ci.org/GaruGaru/ciak.svg?branch=master)](https://travis-ci.org/GaruGaru/ciak)
 [![Go Report Card](https://goreportcard.com/badge/github.com/GaruGaru/ciak)](https://goreportcard.com/report/github.com/GaruGaru/ciak)
+![Go](https://github.com/GaruGaru/ciak/workflows/Go/badge.svg)
+![Docker](https://github.com/GaruGaru/ciak/workflows/Docker/badge.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/garugaru/ciak)
 ![license](https://img.shields.io/github/license/GaruGaru/ciak.svg)
+
 
 Ciak allows you to show and stream your personal media tv series, movies, etc with a simple and clean web ui.
 The server also provide on the fly video encoding in order to stream non standard formats such as avi, mkv...
