@@ -12,6 +12,7 @@ type PageMedia struct {
 	Media          models.Media
 	TransferStatus task.ScheduledTask
 	Cover          string
+	Playable       bool
 }
 
 type MediaListPage struct {
@@ -73,6 +74,7 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 			Media:          media,
 			TransferStatus: transferResult,
 			Cover:          metadata.Poster,
+			Playable:       isExtensionPlayable(media.Format),
 		})
 
 	}

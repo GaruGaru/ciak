@@ -25,8 +25,14 @@
                         <p class="card-text">Type: {{.Media.Format.Name }}</p>
                         <p class="card-text">Size: {{.Media.Size}} mb</p>
 
+
                         <a href="media/{{.Media.Hash}}" class="btn btn-primary">
-                            View
+                            {{ if .Playable }}
+                            Play
+                            {{ else }}
+                            Download
+                            {{ end }}
+
                         </a>
 
                         {{if $ShowTransfer}}
