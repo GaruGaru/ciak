@@ -29,7 +29,8 @@ func NewCiakServer(
 	discovery discovery.MediaDiscovery,
 	authenticator auth.Authenticator,
 	daemon daemon.CiakDaemon,
-	omdbClient omdb.Client) CiakServer {
+	omdbClient omdb.Client,
+) CiakServer {
 	return CiakServer{
 		Config:         conf,
 		MediaDiscovery: discovery,

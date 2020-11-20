@@ -7,9 +7,9 @@ type CiakConfig struct {
 }
 
 type CiakServerConfig struct {
-	ServerBinding         string
-	AuthenticationEnabled bool
-	OmdbApiKey            string
+	ServerBinding         string `json:"bind"`
+	AuthenticationEnabled bool   `json:"enable_auth"`
+	OmdbApiKey            string `json:"omdb_api_key"`
 }
 
 type CiakDaemonConfig struct {

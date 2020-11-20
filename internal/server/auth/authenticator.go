@@ -19,6 +19,25 @@ func (a NoOpAuthenticator) Authenticate(username string, password string) (User,
 	return User{Name: username}, nil
 }
 
+type StaticCredentialsAuthenticator struct {
+	username string
+	password string
+}
+
+func NewStaticCredentialsApi(username string, password string) StaticCredentialsAuthenticator {
+	return StaticCredentialsAuthenticator{
+		username: username,
+		password: password,
+	}
+}
+
+func (a StaticCredentialsAuthenticator) Authenticate(username string, password string) (User, error) {
+	if username == a.username && password == a.password {
+		return User{Name: username}, nil
+	}
+	return User{}, fmt.Errorf("login error")
+}
+
 type EnvAuthenticator struct{}
 
 func (a EnvAuthenticator) Authenticate(username string, password string) (User, error) {
@@ -27,7 +46,7 @@ func (a EnvAuthenticator) Authenticate(username string, password string) (User, 
 
 	if username == envUser && password == envPassword {
 		return User{Name: username}, nil
-	} else {
-		return User{}, fmt.Errorf("login error")
 	}
+
+	return User{}, fmt.Errorf("login error")
 }

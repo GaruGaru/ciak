@@ -20,7 +20,6 @@ type LoginPage struct {
 	Title string
 }
 
-var loginPageTemplate = template.Must(template.ParseFiles("static/base.html", "static/login.html"))
 
 var store = sessions.NewCookieStore([]byte("ciak_session"))
 
@@ -34,7 +33,7 @@ func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
 		s.createSession(w, r, authUser)
 		http.Redirect(w, r, "/", http.StatusFound)
 	} else {
-		http.Redirect(w, r, "/login", 302)
+		http.Redirect(w, r, "/login", http.StatusFound)
 	}
 
 }
@@ -52,13 +51,12 @@ func (s CiakServer) createSession(w http.ResponseWriter, r *http.Request, user a
 }
 
 func (s CiakServer) LoginPageHandler(w http.ResponseWriter, r *http.Request) {
-	loginPageTemplate.Execute(w, LoginPage{
+	template.Must(template.ParseFiles("static/base.html", "static/login.html")).Execute(w, LoginPage{
 		Title: "Login",
 	})
 }
 
 func (s CiakServer) SessionAuthMiddleware(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		if !s.Config.AuthenticationEnabled || utils.StringIn(r.URL.Path, UnauthenticatedUrls) {
