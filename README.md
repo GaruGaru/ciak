@@ -56,4 +56,4 @@ You can configure Ciak using the command line flags
 
 * **--omdb-api-key** omdbapi.com api key used for movie metadata retrieving 
 
-* **--db** database file path (default /tmp/ciak_daemon.db)
+* **--db** database file path (default /ciak_daemon.db)

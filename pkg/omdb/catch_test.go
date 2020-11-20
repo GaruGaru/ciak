@@ -1,12 +1,11 @@
 package omdb
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestBasic(t *testing.T) {
-	memCache := &MemoryCache{}
+	memCache := NewMemoryCache()
 	key := "The Queen's Gambit"
 	movie := Movie{
 		Title:    "The Queen's Gambit",
@@ -39,15 +38,15 @@ func TestBasic(t *testing.T) {
 	memCache.Put(key, movie)
 	movie, exist := memCache.Get(key)
 	if !exist {
-		fmt.Println("error, movie doesn't exist")
+		t.Error("error, we store a movie in Cache, but it doesn't exist when we get it")
 	} else {
-		fmt.Println("movie stored and get successful")
+		t.Log("movie stored and get successful")
 	}
 	memCache.Del(key)
 	movie, exist = memCache.Get(key)
 	if exist {
-		fmt.Println("delete failed")
+		t.Error("we delete a movie from cache, but when we get it, it still exists, wired!")
 	} else {
-		fmt.Println("delete successful")
+		t.Log("delete successful")
 	}
 }

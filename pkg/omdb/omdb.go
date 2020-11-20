@@ -29,7 +29,7 @@ func New(apiKey string) Client {
 	}
 	return &Omdb{
 		ApiKey: apiKey,
-		Cache:  &MemoryCache{},
+		Cache:  NewMemoryCache(),
 		httpClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
