@@ -2,17 +2,24 @@ package server
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/utils"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/gorilla/mux"
 	"net/http"
 	"path/filepath"
 )
 
-var SupportedVideoFormats = []string{
-	"flac", "mp4", "m4a",
-	"mp3", "ogv", "ogm",
-	"ogg", "oga", "opus",
-	"webm", "wav",
+var playableMediaFormats = []models.MediaFormat{
+	models.MediaFormatFlac,
+	models.MediaFormatMp4,
+	models.MediaFormatMp4a,
+	models.MediaFormatMp3,
+	models.MediaFormatOgv,
+	models.MediaFormatOgm,
+	models.MediaFormatOgg,
+	models.MediaFormatOga,
+	models.MediaFormatOpus,
+	models.MediaFormatWebm,
+	models.MediaFormatWav,
 }
 
 func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,9 +32,9 @@ func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if IsExtensionPlayable(media.Extension) {
+	if isExtensionPlayable(media.Format) {
 		w.Header().Set("Accept-Ranges", "bytes")
-		w.Header().Set("Content-Type", "video/"+media.Extension)
+		w.Header().Set("Content-Type", "video/"+media.Format.Name())
 	} else {
 		_, fileName := filepath.Split(media.FilePath)
 		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", fileName))
@@ -36,6 +43,11 @@ func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request
 	http.ServeFile(w, r, media.FilePath)
 }
 
-func IsExtensionPlayable(ext string) bool {
-	return utils.StringIn(ext, SupportedVideoFormats)
+func isExtensionPlayable(format models.MediaFormat) bool {
+	for _, playableFormat := range playableMediaFormats {
+		if playableFormat == format {
+			return true
+		}
+	}
+	return false
 }

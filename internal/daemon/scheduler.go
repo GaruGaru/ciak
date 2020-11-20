@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/daemon/tasks"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/GaruGaru/duty/task"
 	log "github.com/sirupsen/logrus"
 	"path/filepath"
@@ -25,7 +26,7 @@ func (daemon CiakDaemon) ScheduleWithID(id string, task task.Task) error {
 
 func (daemon CiakDaemon) ScheduleMediaTransfer(media discovery.Media) error {
 
-	output := filepath.Join(daemon.Conf.TransferDestination, fmt.Sprintf("%s.%s", media.Name, media.Extension))
+	output := filepath.Join(daemon.Conf.TransferDestination, fmt.Sprintf("%s.%s", media.Name, media.Format))
 
 	transfer := tasks.TransferTask{
 		Source:      media.FilePath,
@@ -43,7 +44,7 @@ func (daemon CiakDaemon) ScheduleFullMediaConversion() error {
 	}
 
 	for _, media := range mediaList {
-		if daemon.Encoder.CanEncode(media.Extension) {
+		if daemon.Encoder.CanEncode(media.Format) {
 			daemon.ScheduleMediaConversion(media)
 		}
 	}
@@ -59,7 +60,7 @@ func (daemon CiakDaemon) ScheduleMediaConversion(media discovery.Media) {
 		OutputPath:     daemon.Conf.OutputPath,
 		DeleteOriginal: daemon.Conf.DeleteOriginal,
 		OverrideOld:    false,
-		OutputFormat:   "mp4",
+		OutputFormat:   models.MediaFormatMp4,
 	})
 
 	if err != nil {

@@ -2,6 +2,7 @@ package encoding
 
 import (
 	"bytes"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	log "github.com/sirupsen/logrus"
 	"os/exec"
 )
@@ -10,7 +11,10 @@ type FFMpegEncoder struct {
 }
 
 var (
-	SupportedExtensions = []string{"avi", "mkv"}
+	ConvertibleFormats = []models.MediaFormat{
+		models.MediaFormatAvi,
+		models.MediaFormatMkv,
+	}
 )
 
 func (FFMpegEncoder) Encode(input string, output string) error {
@@ -30,9 +34,9 @@ func (FFMpegEncoder) Encode(input string, output string) error {
 	return err
 }
 
-func (FFMpegEncoder) CanEncode(extension string) bool {
-	for _, ext := range SupportedExtensions {
-		if ext == extension {
+func (FFMpegEncoder) CanEncode(format models.MediaFormat) bool {
+	for _, convertibleFormat := range ConvertibleFormats {
+		if convertibleFormat == format {
 			return true
 		}
 	}

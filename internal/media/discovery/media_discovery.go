@@ -2,15 +2,8 @@ package discovery
 
 import (
 	"fmt"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	"hash/fnv"
-)
-
-
-var (
-	FormatsWhitelist = []string{
-		".avi", ".mkv", ".flac", ".mp4", ".m4a", ".mp3", ".ogv",
-		".ogm", ".ogg", ".oga", ".opus", ".webm", ".wav",
-	}
 )
 
 type MediaDiscovery interface {
@@ -19,10 +12,10 @@ type MediaDiscovery interface {
 }
 
 type Media struct {
-	Name      string
-	Extension string
-	FilePath  string
-	Size      int64
+	Name     string
+	Format   models.MediaFormat
+	FilePath string
+	Size     int64
 }
 
 func (m Media) Hash() string {
@@ -30,4 +23,3 @@ func (m Media) Hash() string {
 	h.Write([]byte(fmt.Sprintf("%s%s", m.FilePath, m.Name)))
 	return fmt.Sprint(h.Sum32())
 }
-

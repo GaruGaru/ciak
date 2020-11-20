@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/encoding"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
@@ -15,29 +16,24 @@ type MediaConvertTask struct {
 	OutputPath     string
 	DeleteOriginal bool
 	OverrideOld    bool
-	OutputFormat   string
+	OutputFormat   models.MediaFormat
 }
 
 func (mt MediaConvertTask) Type() string {
-	panic("MediaConvertTask")
+	return "MediaConvertTask"
 }
 
 func (mt MediaConvertTask) Run() error {
-
-	if mt.OutputFormat == "" {
-		return fmt.Errorf("empty output format provided")
-	}
-
 	log.Info("Converting media ", mt.Media.Name)
 
-	if !mt.Encoder.CanEncode(mt.Media.Extension) {
+	if !mt.Encoder.CanEncode(mt.Media.Format) {
 		log.Warn("Unable to convert ", mt.Media.FilePath, " extension not supported.")
 		return nil
 	}
 
 	_, srcName := filepath.Split(mt.Media.FilePath)
 
-	outFile := fmt.Sprintf("%s.%s", srcName, mt.OutputFormat)
+	outFile := fmt.Sprintf("%s.%s", srcName, mt.OutputFormat.Name())
 
 	outPath := filepath.Join(mt.OutputPath, outFile)
 
@@ -60,10 +56,10 @@ func (mt MediaConvertTask) Run() error {
 	}
 
 	output := discovery.Media{
-		Name:      srcName,
-		Extension: mt.OutputFormat,
-		FilePath:  outPath,
-		Size:      0,
+		Name:     srcName,
+		Format:   mt.OutputFormat,
+		FilePath: outPath,
+		Size:     0,
 	}
 
 	if mt.DeleteOriginal {

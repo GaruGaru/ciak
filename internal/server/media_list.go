@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/duty/task"
+	"github.com/sirupsen/logrus"
 	"html/template"
 	"net/http"
 )
@@ -86,6 +87,9 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 
 	var mediaListTemplate = template.Must(template.ParseFiles("static/base.html", "static/media-list.html"))
 
-	_ = mediaListTemplate.Execute(w, mediaListPage)
+	if err := mediaListTemplate.Execute(w, mediaListPage); err != nil {
+		logrus.Error(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 
 }

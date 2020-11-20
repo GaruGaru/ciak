@@ -2,8 +2,8 @@ package discovery
 
 import (
 	"fmt"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/GaruGaru/ciak/internal/media/translator"
-	"github.com/GaruGaru/ciak/internal/utils"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path"
@@ -46,9 +46,20 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 			return err
 		}
 
-		if !file.IsDir() && utils.StringIn(path.Ext(filePath), FormatsWhitelist) {
-			mediaList = append(mediaList, fileToMedia(file, filePath))
+		if file.IsDir() {
+			return nil
 		}
+
+		media, err := fileToMedia(file, filePath)
+		if err == models.ErrMediaFormatNotSupported {
+			return nil
+		}
+
+		if err != nil{
+			return err
+		}
+
+		mediaList = append(mediaList, media)
 
 		return nil
 	})
@@ -65,13 +76,18 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 	return mediaList, nil
 }
 
-func fileToMedia(fileInfo os.FileInfo, filePath string) Media {
+func fileToMedia(fileInfo os.FileInfo, filePath string) (Media, error) {
 	extension := path.Ext(filePath)
+	mediaExt, err := models.MediaFormatFrom(extension)
+	if err != nil{
+		return Media{}, err
+	}
+
 	name := strings.Replace(fileInfo.Name(), extension, "", 1)
 	return Media{
-		Name:      translator.Translate(name),
-		FilePath:  filePath,
-		Size:      fileInfo.Size() / 1024 / 1024,
-		Extension: strings.TrimLeft(extension, "."),
-	}
+		Name:     translator.Translate(name),
+		FilePath: filePath,
+		Size:     fileInfo.Size() / 1024 / 1024,
+		Format:   mediaExt,
+	}, nil
 }
