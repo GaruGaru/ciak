@@ -3,12 +3,13 @@ package omdb
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 	"regexp"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Omdb struct {
@@ -28,7 +29,7 @@ func New(apiKey string) Client {
 	}
 	return &Omdb{
 		ApiKey: apiKey,
-		Cache:  NewMemoryCache(),
+		Cache:  &MemoryCache{},
 		httpClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
