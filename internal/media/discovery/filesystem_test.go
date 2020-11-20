@@ -17,14 +17,14 @@ func TestFileSystemDiscovery(t *testing.T) {
 		require.Contains(t, media.FilePath, "testdata/")
 	}
 
-	require.Equal(t, medias[0], Media{
+	require.Equal(t, medias[0], models.Media{
 		Name:     "movie0",
 		Format:   models.MediaFormatAvi,
 		FilePath: "testdata/movie0.avi",
 		Size:     0,
 	})
 
-	require.Equal(t, medias[1], Media{
+	require.Equal(t, medias[1], models.Media{
 		Name:     "movie1",
 		Format:   models.MediaFormatMkv,
 		FilePath: "testdata/movie1.mkv",

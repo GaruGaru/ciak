@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/encoding"
 	"github.com/GaruGaru/ciak/internal/media/models"
 	log "github.com/sirupsen/logrus"
@@ -12,7 +11,7 @@ import (
 
 type MediaConvertTask struct {
 	Encoder        encoding.MediaEncoder
-	Media          discovery.Media
+	Media          models.Media
 	OutputPath     string
 	DeleteOriginal bool
 	OverrideOld    bool
@@ -55,7 +54,7 @@ func (mt MediaConvertTask) Run() error {
 		return err
 	}
 
-	output := discovery.Media{
+	output := models.Media{
 		Name:     srcName,
 		Format:   mt.OutputFormat,
 		FilePath: outPath,

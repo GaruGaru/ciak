@@ -3,7 +3,6 @@ package daemon
 import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/daemon/tasks"
-	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/GaruGaru/duty/task"
 	log "github.com/sirupsen/logrus"
@@ -24,7 +23,7 @@ func (daemon CiakDaemon) ScheduleWithID(id string, task task.Task) error {
 	return err
 }
 
-func (daemon CiakDaemon) ScheduleMediaTransfer(media discovery.Media) error {
+func (daemon CiakDaemon) ScheduleMediaTransfer(media models.Media) error {
 
 	output := filepath.Join(daemon.Conf.TransferDestination, fmt.Sprintf("%s.%s", media.Name, media.Format.Name()))
 
@@ -52,7 +51,7 @@ func (daemon CiakDaemon) ScheduleFullMediaConversion() error {
 	return err
 }
 
-func (daemon CiakDaemon) ScheduleMediaConversion(media discovery.Media) {
+func (daemon CiakDaemon) ScheduleMediaConversion(media models.Media) {
 	log.Info("Scheduled ", media.Name, " for conversion")
 	err := daemon.Schedule(tasks.MediaConvertTask{
 		Encoder:        daemon.Encoder,

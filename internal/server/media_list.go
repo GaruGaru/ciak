@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/GaruGaru/ciak/internal/media/discovery"
+	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/GaruGaru/duty/task"
 	"github.com/sirupsen/logrus"
 	"html/template"
@@ -9,7 +9,7 @@ import (
 )
 
 type PageMedia struct {
-	Media          discovery.Media
+	Media          models.Media
 	TransferStatus task.ScheduledTask
 	Cover          string
 }
@@ -37,7 +37,7 @@ func (p PageMedia) TButtonClass() string {
 	}
 }
 
-func mediaToTitlesList(media []discovery.Media) []string {
+func mediaToTitlesList(media []models.Media) []string {
 	titles := make([]string, 0)
 	for _, m := range media {
 		titles = append(titles, m.Name)

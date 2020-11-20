@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"hash/fnv"
 )
 
 var (
@@ -64,3 +65,16 @@ func (d MediaFormat) Name() string {
 	}[d]
 }
 
+
+type Media struct {
+	Name     string
+	Format   MediaFormat
+	FilePath string
+	Size     int64
+}
+
+func (m Media) Hash() string {
+	h := fnv.New32a()
+	h.Write([]byte(fmt.Sprintf("%s%s", m.FilePath, m.Name)))
+	return fmt.Sprint(h.Sum32())
+}
