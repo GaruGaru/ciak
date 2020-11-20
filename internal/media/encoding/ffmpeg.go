@@ -7,8 +7,7 @@ import (
 	"os/exec"
 )
 
-type FFMpegEncoder struct {
-}
+type FFMpegEncoder struct {}
 
 var (
 	ConvertibleFormats = []models.MediaFormat{
@@ -16,6 +15,10 @@ var (
 		models.MediaFormatMkv,
 	}
 )
+
+func FFMpeg() FFMpegEncoder {
+	return FFMpegEncoder{}
+}
 
 func (FFMpegEncoder) Encode(input string, output string) error {
 	cmd := exec.Command("ffmpeg", "-i", input, "-vcodec", "copy", "-acodec", "copy", output)

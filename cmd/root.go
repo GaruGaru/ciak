@@ -24,13 +24,11 @@ var rootCmd = &cobra.Command{
 
 		conf.DaemonConfig.OutputPath = conf.MediaPath
 
-		mediaDiscovery := discovery.FileSystemMediaDiscovery{
-			BasePath: conf.MediaPath,
-		}
+		mediaDiscovery := discovery.NewFileSystemDiscovery(conf.MediaPath)
 
-		encoder := encoding.FFMpegEncoder{}
+		encoder := encoding.FFMpeg()
 
-		authenticator := auth.EnvAuthenticator{}
+		authenticator := auth.NewEnvAuthenticator()
 
 		omdbClient := omdb.New(conf.ServerConfig.OmdbApiKey)
 

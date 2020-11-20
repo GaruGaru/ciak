@@ -5,7 +5,6 @@ import (
 	"github.com/GaruGaru/ciak/internal/daemon"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/server/auth"
-	"github.com/GaruGaru/ciak/pkg"
 	"github.com/GaruGaru/ciak/pkg/omdb"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"

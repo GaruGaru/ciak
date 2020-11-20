@@ -38,15 +38,8 @@ func (a StaticCredentialsAuthenticator) Authenticate(username string, password s
 	return User{}, fmt.Errorf("login error")
 }
 
-type EnvAuthenticator struct{}
-
-func (a EnvAuthenticator) Authenticate(username string, password string) (User, error) {
+func NewEnvAuthenticator() StaticCredentialsAuthenticator {
 	envUser := os.Getenv("CIAK_USERNAME")
 	envPassword := os.Getenv("CIAK_PASSWORD")
-
-	if username == envUser && password == envPassword {
-		return User{Name: username}, nil
-	}
-
-	return User{}, fmt.Errorf("login error")
+	return NewStaticCredentialsApi(envUser, envPassword)
 }
