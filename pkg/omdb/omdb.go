@@ -3,12 +3,13 @@ package omdb
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 	"regexp"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Omdb struct {

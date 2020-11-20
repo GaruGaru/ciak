@@ -8,26 +8,25 @@ type Cache interface {
 }
 
 type MemoryCache struct {
-	cacheMap map[string]Movie
-	mutex *sync.RWMutex
+	sync.Map
 }
 
 func NewMemoryCache() *MemoryCache {
-	return &MemoryCache{
-		cacheMap: make(map[string]Movie),
-		mutex: &sync.RWMutex{},
-	}
+	return &MemoryCache{}
 }
 
 func (m *MemoryCache) Put(key string, movie Movie) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-	m.cacheMap[key] = movie
+	m.Store(key, movie)
 }
 
 func (m *MemoryCache) Get(key string) (Movie, bool) {
-	m.mutex.RLock()
-	defer m.mutex.RUnlock()
-	movie, present := m.cacheMap[key]
-	return movie, present
+	res, ok := m.Load(key)
+	if ok {
+		return res.(Movie), ok
+	}
+	return Movie{}, ok
+}
+
+func (m *MemoryCache) Del(key string) {
+	m.Delete(key)
 }
