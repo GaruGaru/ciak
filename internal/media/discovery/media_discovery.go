@@ -5,6 +5,19 @@ import (
 	"hash/fnv"
 )
 
+
+var (
+	FormatsWhitelist = []string{
+		".avi", ".mkv", ".flac", ".mp4", ".m4a", ".mp3", ".ogv",
+		".ogm", ".ogg", ".oga", ".opus", ".webm", ".wav",
+	}
+)
+
+type MediaDiscovery interface {
+	Discover() ([]Media, error)
+	Resolve(hash string) (Media, error)
+}
+
 type Media struct {
 	Name      string
 	Extension string
@@ -18,7 +31,3 @@ func (m Media) Hash() string {
 	return fmt.Sprint(h.Sum32())
 }
 
-type MediaDiscovery interface {
-	Discover() ([]Media, error)
-	Resolve(hash string) (Media, error)
-}

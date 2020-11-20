@@ -8,18 +8,16 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strings"
-)
-
-var (
-	FormatsWhitelist = []string{
-		".avi", ".mkv", ".flac", ".mp4", ".m4a", ".mp3", ".ogv",
-		".ogm", ".ogg", ".oga", ".opus", ".webm", ".wav",
-	}
 )
 
 type FileSystemMediaDiscovery struct {
 	BasePath string
+}
+
+func NewFileSystemDiscovery(basePath string) FileSystemMediaDiscovery {
+	return FileSystemMediaDiscovery{BasePath: basePath}
 }
 
 func (d FileSystemMediaDiscovery) Resolve(hash string) (Media, error) {
@@ -61,12 +59,14 @@ func (d FileSystemMediaDiscovery) Discover() ([]Media, error) {
 
 	log.Info("Found ", len(mediaList), " media after discovery")
 
+	sort.Slice(mediaList, func(i, j int) bool {
+		return mediaList[i].Name < mediaList[j].Name
+	})
 	return mediaList, nil
 }
 
 func fileToMedia(fileInfo os.FileInfo, filePath string) Media {
 	extension := path.Ext(filePath)
-
 	name := strings.Replace(fileInfo.Name(), extension, "", 1)
 	return Media{
 		Name:      translator.Translate(name),
