@@ -40,6 +40,12 @@ func New(conf config.CiakDaemonConfig, MediaDiscovery discovery.MediaDiscovery, 
 }
 
 func (daemon CiakDaemon) Start() error {
+	dateFormatter := &log.TextFormatter{
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05.001 -0700 MST",
+	}
+	log.SetFormatter(dateFormatter)
+	log.SetReportCaller(true)
 	log.WithFields(log.Fields{
 		"workers":    daemon.Conf.Workers,
 		"queue_size": daemon.Conf.QueueSize,
