@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/daemon"
+	"github.com/GaruGaru/ciak/internal/media/details"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/server/auth"
-	"github.com/GaruGaru/ciak/pkg/omdb"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 	"net/http"
@@ -16,11 +16,11 @@ const (
 )
 
 type CiakServer struct {
-	Config         config.CiakServerConfig
-	MediaDiscovery discovery.MediaDiscovery
-	Authenticator  auth.Authenticator
-	Daemon         daemon.CiakDaemon
-	OmbdClient     omdb.Client
+	Config           config.CiakServerConfig
+	MediaDiscovery   discovery.MediaDiscovery
+	Authenticator    auth.Authenticator
+	Daemon           daemon.CiakDaemon
+	DetailsRetriever details.Controller
 }
 
 func NewCiakServer(
@@ -28,14 +28,14 @@ func NewCiakServer(
 	discovery discovery.MediaDiscovery,
 	authenticator auth.Authenticator,
 	daemon daemon.CiakDaemon,
-	omdbClient omdb.Client,
+	DetailsRetriever details.Controller,
 ) CiakServer {
 	return CiakServer{
-		Config:         conf,
-		MediaDiscovery: discovery,
-		Authenticator:  authenticator,
-		Daemon:         daemon,
-		OmbdClient:     omdbClient,
+		Config:           conf,
+		MediaDiscovery:   discovery,
+		Authenticator:    authenticator,
+		Daemon:           daemon,
+		DetailsRetriever: DetailsRetriever,
 	}
 }
 

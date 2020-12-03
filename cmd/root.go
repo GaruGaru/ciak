@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/daemon"
+	"github.com/GaruGaru/ciak/internal/media/details"
 	"github.com/GaruGaru/ciak/internal/media/discovery"
 	"github.com/GaruGaru/ciak/internal/media/encoding"
 	"github.com/GaruGaru/ciak/internal/server"
 	"github.com/GaruGaru/ciak/internal/server/auth"
-	"github.com/GaruGaru/ciak/pkg/omdb"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -30,7 +30,12 @@ var rootCmd = &cobra.Command{
 
 		authenticator := auth.NewEnvAuthenticator()
 
-		omdbClient := omdb.New(conf.ServerConfig.OmdbApiKey)
+		detailsRetrievers := make([]details.Retriever, 0)
+		if conf.ServerConfig.OmdbApiKey != "" {
+			detailsRetrievers = append(detailsRetrievers, details.Omdb(conf.ServerConfig.OmdbApiKey))
+		}
+
+		detailsController := details.Controller{Retrievers: detailsRetrievers}
 
 		daemon, err := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
 
@@ -38,7 +43,7 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 
-		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon, omdbClient)
+		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon, detailsController)
 
 		err = daemon.Start()
 

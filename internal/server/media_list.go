@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/GaruGaru/ciak/internal/media/details"
 	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/GaruGaru/duty/task"
 	"github.com/sirupsen/logrus"
@@ -38,10 +39,12 @@ func (p PageMedia) TButtonClass() string {
 	}
 }
 
-func mediaToTitlesList(media []models.Media) []string {
-	titles := make([]string, 0)
-	for _, m := range media {
-		titles = append(titles, m.Name)
+func mediaToTitlesList(media []models.Media) []details.Request {
+	titles := make([]details.Request, 0)
+	for _, item := range media {
+		titles = append(titles, details.Request{
+			Title: item.Name,
+		})
 	}
 	return titles
 }
@@ -50,7 +53,7 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 
 	mediaList, err := s.MediaDiscovery.Discover()
 
-	mediaMetadata, err := s.OmbdClient.ByTitleBulk(mediaToTitlesList(mediaList)...)
+	mediaMetadata, err := s.DetailsRetriever.DetailsByTitleBulk(mediaToTitlesList(mediaList)...)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -64,8 +67,8 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 
 		metadata := mediaMetadata[media.Name]
 
-		if metadata.Poster == "" {
-			metadata.Poster = "https://via.placeholder.com/300"
+		if metadata.ImagePoster == "" {
+			metadata.ImagePoster = "https://via.placeholder.com/300"
 		}
 
 		transferResult, _ := s.Daemon.Task(media.Hash())
@@ -73,7 +76,7 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 		pageMediaList = append(pageMediaList, PageMedia{
 			Media:          media,
 			TransferStatus: transferResult,
-			Cover:          metadata.Poster,
+			Cover:          metadata.ImagePoster,
 			Playable:       isExtensionPlayable(media.Format),
 		})
 
