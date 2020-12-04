@@ -7,14 +7,14 @@ import (
 )
 
 func TestFileSystemDiscovery(t *testing.T) {
-	discover := NewFileSystemDiscovery("testdata/")
+	discover := NewFileSystemDiscovery("testdata")
 
 	medias, err := discover.Discover()
 	require.NoError(t, err)
 	require.Len(t, medias, 3)
 
 	for _, media := range medias {
-		require.Contains(t, media.FilePath, "testdata/")
+		require.Contains(t, media.FilePath, "testdata")
 	}
 
 	require.Equal(t, medias[0], models.Media{
