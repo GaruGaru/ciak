@@ -1,7 +1,7 @@
 package tasks
 
 import (
-	"github.com/GaruGaru/ciak/pkg/files"
+	"github.com/GaruGaru/ciak/internal/files"
 	log "github.com/sirupsen/logrus"
 )
 
