@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"hash/fnv"
 )
 
@@ -65,7 +66,6 @@ func (d MediaFormat) Name() string {
 	}[d]
 }
 
-
 type Media struct {
 	Name     string
 	Format   MediaFormat
@@ -75,6 +75,9 @@ type Media struct {
 
 func (m Media) Hash() string {
 	h := fnv.New32a()
-	h.Write([]byte(fmt.Sprintf("%s%s", m.FilePath, m.Name)))
+	_, err := h.Write([]byte(fmt.Sprintf("%s%s", m.FilePath, m.Name)))
+	if err != nil {
+		logrus.Error()
+	}
 	return fmt.Sprint(h.Sum32())
 }

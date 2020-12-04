@@ -50,8 +50,12 @@ func mediaToTitlesList(media []models.Media) []details.Request {
 }
 
 func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
-
 	mediaList, err := s.MediaDiscovery.Discover()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
 
 	mediaMetadata, err := s.DetailsRetriever.DetailsByTitleBulk(mediaToTitlesList(mediaList)...)
 

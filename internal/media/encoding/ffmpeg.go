@@ -30,8 +30,8 @@ func (FFMpegEncoder) Encode(input string, output string) error {
 	err := cmd.Run()
 
 	if err != nil {
-		log.Info(string(cmdOutput.Bytes()))
-		log.Error(string(cmdErrOutput.Bytes()))
+		log.Info(cmdOutput.String())
+		log.Error(cmdErrOutput.String())
 	}
 
 	return err

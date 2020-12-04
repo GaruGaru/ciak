@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"path/filepath"
 )
@@ -28,7 +29,9 @@ func (s CiakServer) MediaStreamingHandler(w http.ResponseWriter, r *http.Request
 	media, err := s.MediaDiscovery.Resolve(params["media"])
 
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		if _, err := w.Write([]byte(err.Error())); err != nil {
+			logrus.Error(err.Error())
+		}
 		return
 	}
 

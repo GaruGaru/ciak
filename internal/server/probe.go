@@ -1,7 +1,12 @@
 package server
 
-import "net/http"
+import (
+	"github.com/sirupsen/logrus"
+	"net/http"
+)
 
 func ProbeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("OK"))
+	if _, err := w.Write([]byte("OK")); err != nil {
+		logrus.Error(err.Error())
+	}
 }

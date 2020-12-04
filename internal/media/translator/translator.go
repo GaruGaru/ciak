@@ -10,9 +10,9 @@ var removeStrings = []string{
 	")", "(",
 }
 
-var nameRegex = regexp.MustCompile("(.*?)(\\d\\d\\d\\d|S\\d\\dE\\d\\d)")
+var nameRegex = regexp.MustCompile(`(.*?)(\\d\\d\\d\\d|S\\d\\dE\\d\\d)`)
 
-var removeLogoRegex = regexp.MustCompile("(\\[.*?])")
+var removeLogoRegex = regexp.MustCompile(`(\\[.*?])`)
 
 func Translate(name string) string {
 

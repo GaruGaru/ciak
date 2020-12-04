@@ -64,7 +64,7 @@ func (o OmdbClient) Details(request Request) (models.Details, error) {
 }
 
 func normalizeTitle(title string) string {
-	removeYear := regexp.MustCompile("(.*) (.*)(\\d\\d\\d\\d)")
+	removeYear := regexp.MustCompile(`(.*) (.*)(\\d\\d\\d\\d)`)
 	matches := removeYear.FindAllString(title, -1)
 	if len(matches) == 0 {
 		return title

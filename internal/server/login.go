@@ -20,7 +20,6 @@ type LoginPage struct {
 	Title string
 }
 
-
 var store = sessions.NewCookieStore([]byte("ciak_session"))
 
 func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,8 +28,12 @@ func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	authUser, err := s.Authenticator.Authenticate(username, password)
+
 	if err == nil {
-		s.createSession(w, r, authUser)
+		if err := s.createSession(w, r, authUser); err != nil {
+			http.Redirect(w, r, "/login", http.StatusFound)
+			return
+		}
 		http.Redirect(w, r, "/", http.StatusFound)
 	} else {
 		http.Redirect(w, r, "/login", http.StatusFound)
@@ -38,22 +41,25 @@ func (s CiakServer) LoginApiHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (s CiakServer) createSession(w http.ResponseWriter, r *http.Request, user auth.User) {
+func (s CiakServer) createSession(w http.ResponseWriter, r *http.Request, user auth.User) error {
 	session, err := store.Get(r, "user")
 
 	if err != nil {
-		logrus.Warn("Error creating the session: ", err)
-		return
+		return err
 	}
 
 	session.Values["username"] = user.Name
-	store.Save(r, w, session)
+	return store.Save(r, w, session)
 }
 
 func (s CiakServer) LoginPageHandler(w http.ResponseWriter, r *http.Request) {
-	template.Must(template.ParseFiles("static/base.html", "static/login.html")).Execute(w, LoginPage{
+	err := template.Must(template.ParseFiles("static/base.html", "static/login.html")).Execute(w, LoginPage{
 		Title: "Login",
 	})
+
+	if err != nil {
+		logrus.Error(err.Error())
+	}
 }
 
 func (s CiakServer) SessionAuthMiddleware(next http.Handler) http.Handler {
