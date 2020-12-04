@@ -3,6 +3,7 @@ package discovery
 import (
 	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/stretchr/testify/require"
+	"path"
 	"testing"
 )
 
@@ -20,14 +21,14 @@ func TestFileSystemDiscovery(t *testing.T) {
 	require.Equal(t, medias[0], models.Media{
 		Name:     "movie0",
 		Format:   models.MediaFormatAvi,
-		FilePath: "testdata/movie0.avi",
+		FilePath: path.Join("testdata", "movie0.avi"),
 		Size:     0,
 	})
 
 	require.Equal(t, medias[1], models.Media{
 		Name:     "movie1",
 		Format:   models.MediaFormatMkv,
-		FilePath: "testdata/movie1.mkv",
+		FilePath: path.Join("testdata", "movie1.mkv"),
 		Size:     0,
 	})
 }
