@@ -1,11 +1,11 @@
-name: go-test
+name: go-build-test
 on: [push, pull_request]
 jobs:
   test:
     strategy:
       matrix:
         go-version: [1.14.x, 1.15.x]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest] # windows-latest windows not supported yet
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Go
