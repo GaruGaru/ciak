@@ -2,23 +2,36 @@ package details
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/GaruGaru/ciak/internal/media/models"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
+	"strings"
 	"time"
+)
+
+const (
+	omdbEndpoint = "http://www.omdbapi.com"
+)
+
+var (
+	ErrRatingProviderNotFound = errors.New("no ratings provider parser found")
 )
 
 type OmdbClient struct {
 	apiKey     string
 	httpClient *http.Client
+	endpoint   string
 }
 
 func Omdb(apiKey string) *OmdbClient {
 	return &OmdbClient{
-		apiKey: apiKey,
+		endpoint: omdbEndpoint,
+		apiKey:   apiKey,
 		httpClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
@@ -26,7 +39,7 @@ func Omdb(apiKey string) *OmdbClient {
 }
 
 func (o OmdbClient) Details(request Request) (models.Details, error) {
-	apiUrl := fmt.Sprintf("http://www.omdbapi.com/?apikey=%s&t=%s", o.apiKey, url.QueryEscape(normalizeTitle(request.Title)))
+	apiUrl := fmt.Sprintf("%s/?apikey=%s&t=%s", o.endpoint, o.apiKey, url.QueryEscape(normalizeTitle(request.Title)))
 
 	resp, err := o.httpClient.Get(apiUrl)
 
@@ -52,15 +65,59 @@ func (o OmdbClient) Details(request Request) (models.Details, error) {
 		return models.Details{}, ErrDetailsNotFound
 	}
 
+	releaseDate, err := time.Parse("02 Jan 2006", movie.Released)
+	if err != nil {
+		logrus.Warnf("unable to parse media release date: %s", err)
+	}
+
+	ratingValue, ratingMax, err := parseRating(movie)
+	if err != nil {
+		logrus.Warnf("unable to parse media release date: %s", err)
+	}
+
 	return models.Details{
 		Name:        request.Title, // at the moment we use the name to associate request -> metadata
 		Director:    movie.Director,
 		Genre:       movie.Genre,
-		Rating:      0,
-		MaxRating:   0,
-		ReleaseDate: time.Time{},
+		Rating:      ratingValue,
+		MaxRating:   ratingMax,
+		ReleaseDate: releaseDate,
 		ImagePoster: movie.Poster,
 	}, nil
+}
+
+func parseRating(movie OmdbMovie) (float64, float64, error) {
+	for _, r := range movie.Ratings {
+		val, max, err := omdbParseProviderRating(r.Source, r.Value)
+		if err != nil {
+			if err != ErrRatingProviderNotFound {
+				logrus.Warnf("error parsing rating: %s", err)
+			}
+			continue
+		}
+
+		return val, max, nil
+	}
+
+	return 0, 0, ErrRatingProviderNotFound
+}
+
+func omdbParseProviderRating(provider string, value string) (float64, float64, error) {
+	switch provider {
+	case "Rotten Tomatoes":
+		return omdbParseRottenTomatoesRatings(value)
+	default:
+		return 0, 0, ErrRatingProviderNotFound
+	}
+}
+
+func omdbParseRottenTomatoesRatings(value string) (float64, float64, error) {
+	rawNum := strings.Replace(value, "%", "", 1)
+	val, err := strconv.ParseFloat(rawNum, 64)
+	if err != nil {
+		return 0, 0, err
+	}
+	return val, 100, nil
 }
 
 func normalizeTitle(title string) string {

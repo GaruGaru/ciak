@@ -6,8 +6,8 @@ type Details struct {
 	Name        string
 	Director    string
 	Genre       string
-	Rating      uint8
-	MaxRating   uint8
+	Rating      float64
+	MaxRating   float64
 	ReleaseDate time.Time
 	ImagePoster string
 }
