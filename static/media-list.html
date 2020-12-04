@@ -25,8 +25,12 @@
                         <p class="card-text">Type: {{.Media.Format.Name }}</p>
                         <p class="card-text">Size: {{.Media.Size}} mb</p>
 
+                        {{ if .Rating.Present }}
+                         <p class="card-text">Rating: {{.Rating.Value}} / {{.Rating.Max}}</p>
+                        {{end}}
 
-                        <a href="media/{{.Media.Hash}}" class="btn btn-primary">
+
+                    <a href="media/{{.Media.Hash}}" class="btn btn-primary">
                             {{ if .Playable }}
                             Play
                             {{ else }}

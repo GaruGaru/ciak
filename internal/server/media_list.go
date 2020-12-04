@@ -9,11 +9,18 @@ import (
 	"net/http"
 )
 
+type PageMediaRating struct {
+	Value   float64
+	Max     float64
+	Present bool
+}
+
 type PageMedia struct {
 	Media          models.Media
 	TransferStatus task.ScheduledTask
 	Cover          string
 	Playable       bool
+	Rating         PageMediaRating
 }
 
 type MediaListPage struct {
@@ -82,6 +89,11 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 			TransferStatus: transferResult,
 			Cover:          metadata.ImagePoster,
 			Playable:       isExtensionPlayable(media.Format),
+			Rating: PageMediaRating{
+				Value:   metadata.Rating,
+				Max:     metadata.MaxRating,
+				Present: metadata.MaxRating != 0,
+			},
 		})
 
 	}
