@@ -66,5 +66,9 @@ func TestRetrieveDataFromOmdb(t *testing.T) {
 	require.Equal(t, details.MaxRating,100.)
 	require.Equal(t, details.Rating, 84.)
 
+	_, err = omdbClient.Details(Request{
+		Title: "notfound",
+	})
+	require.Error(t, err)
 
 }
