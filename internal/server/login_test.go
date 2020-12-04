@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/GaruGaru/ciak/internal/cache"
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/daemon"
 	"github.com/GaruGaru/ciak/internal/media/details"
@@ -22,7 +23,7 @@ func TestLoginApiSuccess(t *testing.T) {
 		nil,
 		auth.NewStaticCredentialsApi(username, password),
 		daemon.CiakDaemon{},
-		details.Controller{},
+		details.NewController(cache.Memory()),
 	)
 
 	form := url.Values{}
@@ -51,7 +52,7 @@ func TestLoginApiFail(t *testing.T) {
 		nil,
 		auth.NewStaticCredentialsApi(username, password),
 		daemon.CiakDaemon{},
-		details.Controller{},
+		details.NewController(cache.Memory()),
 	)
 
 	form := url.Values{}

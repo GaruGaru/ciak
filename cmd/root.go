@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/GaruGaru/ciak/internal/cache"
 	"github.com/GaruGaru/ciak/internal/config"
 	"github.com/GaruGaru/ciak/internal/daemon"
 	"github.com/GaruGaru/ciak/internal/media/details"
@@ -35,7 +36,7 @@ var rootCmd = &cobra.Command{
 			detailsRetrievers = append(detailsRetrievers, details.Omdb(conf.ServerConfig.OmdbApiKey))
 		}
 
-		detailsController := details.Controller{Retrievers: detailsRetrievers}
+		detailsController := details.NewController(cache.Memory(), detailsRetrievers...)
 
 		daemon, err := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
 

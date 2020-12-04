@@ -20,7 +20,7 @@ type CiakServer struct {
 	MediaDiscovery   discovery.MediaDiscovery
 	Authenticator    auth.Authenticator
 	Daemon           daemon.CiakDaemon
-	DetailsRetriever details.Controller
+	DetailsRetriever *details.Controller
 }
 
 func NewCiakServer(
@@ -28,7 +28,7 @@ func NewCiakServer(
 	discovery discovery.MediaDiscovery,
 	authenticator auth.Authenticator,
 	daemon daemon.CiakDaemon,
-	DetailsRetriever details.Controller,
+	DetailsRetriever *details.Controller,
 ) CiakServer {
 	return CiakServer{
 		Config:           conf,
