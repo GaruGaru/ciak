@@ -55,7 +55,7 @@ func (d FileSystemMediaDiscovery) Discover() ([]models.Media, error) {
 			return nil
 		}
 
-		if err != nil{
+		if err != nil {
 			return err
 		}
 
@@ -79,7 +79,7 @@ func (d FileSystemMediaDiscovery) Discover() ([]models.Media, error) {
 func fileToMedia(fileInfo os.FileInfo, filePath string) (models.Media, error) {
 	extension := path.Ext(filePath)
 	mediaExt, err := models.MediaFormatFrom(extension)
-	if err != nil{
+	if err != nil {
 		return models.Media{}, err
 	}
 

@@ -11,7 +11,6 @@ import (
 )
 
 func TestRetrieveDataFromOmdb(t *testing.T) {
-
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -34,11 +33,13 @@ func TestRetrieveDataFromOmdb(t *testing.T) {
 		if query == "found" {
 			response, err := ioutil.ReadFile(path.Join("testdata/omdb-found.json"))
 			require.NoError(t, err)
-			w.Write(response)
+			_, err = w.Write(response)
+			require.NoError(t, err)
 		} else {
 			response, err := ioutil.ReadFile(path.Join("testdata/omdb-not-found.json"))
 			require.NoError(t, err)
-			w.Write(response)
+			_, err = w.Write(response)
+			require.NoError(t, err)
 		}
 
 	}))
@@ -63,7 +64,7 @@ func TestRetrieveDataFromOmdb(t *testing.T) {
 	require.NotEqual(t, details.ReleaseDate, time.Time{})
 	require.Equal(t, details.Genre, "Drama, Horror")
 
-	require.Equal(t, details.MaxRating,100.)
+	require.Equal(t, details.MaxRating, 100.)
 	require.Equal(t, details.Rating, 84.)
 
 	_, err = omdbClient.Details(Request{

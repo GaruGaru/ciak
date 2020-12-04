@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-type FFMpegEncoder struct {}
+type FFMpegEncoder struct{}
 
 var (
 	ConvertibleFormats = []models.MediaFormat{
