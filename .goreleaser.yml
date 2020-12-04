@@ -1,14 +1,15 @@
 builds:
+  - env:
+      - CGO_ENABLED=0
     goos:
       - linux
       - darwin
-#      - windows
-
+      - windows
     goarch:
+      - 386
       - amd64
       - arm
       - arm64
-
     goarm:
       - 6
       - 7
