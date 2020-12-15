@@ -3,7 +3,6 @@ package server
 import (
 	"github.com/GaruGaru/ciak/pkg/cache"
 	"github.com/GaruGaru/ciak/pkg/config"
-	"github.com/GaruGaru/ciak/pkg/daemon"
 	"github.com/GaruGaru/ciak/pkg/media/details"
 	"github.com/GaruGaru/ciak/pkg/server/auth"
 	"github.com/stretchr/testify/require"
@@ -22,7 +21,6 @@ func TestLoginApiSuccess(t *testing.T) {
 		config.CiakServerConfig{AuthenticationEnabled: false},
 		nil,
 		auth.NewStaticCredentialsApi(username, password),
-		daemon.CiakDaemon{},
 		details.NewController(cache.Memory()),
 	)
 
@@ -51,7 +49,6 @@ func TestLoginApiFail(t *testing.T) {
 		config.CiakServerConfig{AuthenticationEnabled: false},
 		nil,
 		auth.NewStaticCredentialsApi(username, password),
-		daemon.CiakDaemon{},
 		details.NewController(cache.Memory()),
 	)
 

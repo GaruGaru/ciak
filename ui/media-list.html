@@ -1,74 +1,49 @@
 {{define "content"}}
-    {{ $ShowTransfer := .TransferEnabled }}
 
-    <section class="jumbotron text-center">
-        <h1 class="jumbotron-heading">Your media library</h1>
-    </section>
-    <div class="container">
-        <div class="row">
+<section class="jumbotron text-center">
+    <h1 class="jumbotron-heading">Your media library</h1>
+</section>
+<div class="container">
+    <div class="row">
 
-            {{if .NoMediasFound}}
-                <h1 class="text-center">No playable media found :(</h1>
-            {{end}}
+        {{if .NoMediasFound}}
+        <h1 class="text-center">No playable media found :(</h1>
+        {{end}}
 
-            {{range .PageMedia}}
+        {{range .PageMedia}}
 
-                <div class="card col-md-3 m-1" align="center">
+        <div class="card col-md-3 m-1" align="center">
 
-                <div class="card-body" align="center">
+            <div class="card-body" align="center">
 
-                        {{ if .Cover }}
-                            <img class="rounded img-fluid" alt="Art" src="{{ .Cover }}">
-                        {{end}}
+                {{ if .Cover }}
+                <img class="rounded img-fluid" alt="Art" src="{{ .Cover }}">
+                {{end}}
 
-                        <h5 class="card-title">{{.Media.Name}}</h5>
-                        <p class="card-text">Type: {{.Media.Format.Name }}</p>
-                        <p class="card-text">Size: {{.Media.Size}} mb</p>
+                <h5 class="card-title">{{.Media.Name}}</h5>
+                <p class="card-text">Type: {{.Media.Format.Name }}</p>
+                <p class="card-text">Size: {{.Media.Size}} mb</p>
 
-                        {{ if .Rating.Present }}
-                         <p class="card-text">Rating: {{.Rating.Value}} / {{.Rating.Max}}</p>
-                        {{end}}
-
-
-                    <a href="media/{{.Media.Hash}}" class="btn btn-primary">
-                            {{ if .Playable }}
-                            Play
-                            {{ else }}
-                            Download
-                            {{ end }}
-
-                        </a>
-
-                        {{if $ShowTransfer}}
-                            <button class="btn {{.TButtonClass}} feking-button" data-media="{{.Media.Hash}}">
-                                Transfer
-                            </button>
-                        {{end}}
+                {{ if .Rating.Present }}
+                <p class="card-text">Rating: {{.Rating.Value}} / {{.Rating.Max}}</p>
+                {{end}}
 
 
-                    </div>
-                </div>
-            {{end}}
+                <a href="media/{{.Media.Hash}}" class="btn btn-primary">
+                    {{ if .Playable }}
+                    Play
+                    {{ else }}
+                    Download
+                    {{ end }}
+
+                </a>
+
+
+            </div>
         </div>
+        {{end}}
     </div>
+</div>
 
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-            const buttons = document.querySelectorAll('button.feking-button');
-            buttons.forEach((el) => {
-                el.addEventListener("click", (e) => {
-                    const sender = e.target;
-                    const mediaId = sender.dataset['media'];
-
-                    fetch("/api/media/transfer?media=" + mediaId)
-                        .then(function (myJson) {
-                            console.log(myJson);
-                            location.reload();
-                        });
-
-                });
-            });
-        });
-    </script>
 
 {{end}}

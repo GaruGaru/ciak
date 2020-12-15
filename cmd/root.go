@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"github.com/GaruGaru/ciak/pkg/cache"
 	"github.com/GaruGaru/ciak/pkg/config"
-	"github.com/GaruGaru/ciak/pkg/daemon"
 	"github.com/GaruGaru/ciak/pkg/media/details"
 	"github.com/GaruGaru/ciak/pkg/media/discovery"
-	"github.com/GaruGaru/ciak/pkg/media/encoding"
 	"github.com/GaruGaru/ciak/pkg/server"
 	"github.com/GaruGaru/ciak/pkg/server/auth"
 	"github.com/spf13/cobra"
@@ -27,8 +25,6 @@ var rootCmd = &cobra.Command{
 
 		mediaDiscovery := discovery.NewFileSystemDiscovery(conf.MediaPath)
 
-		encoder := encoding.FFMpeg()
-
 		authenticator := auth.NewEnvAuthenticator()
 
 		detailsRetrievers := make([]details.Retriever, 0)
@@ -38,21 +34,9 @@ var rootCmd = &cobra.Command{
 
 		detailsController := details.NewController(cache.Memory(), detailsRetrievers...)
 
-		daemon, err := daemon.New(conf.DaemonConfig, mediaDiscovery, encoder)
+		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, detailsController)
 
-		if err != nil {
-			panic(err)
-		}
-
-		server := server.NewCiakServer(conf.ServerConfig, mediaDiscovery, authenticator, daemon, detailsController)
-
-		err = daemon.Start()
-
-		if err != nil {
-			panic(err)
-		}
-
-		err = server.Run()
+		err := server.Run()
 
 		if err != nil {
 			panic(err)
@@ -64,13 +48,8 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.PersistentFlags().StringVar(&conf.MediaPath, "media", "/data", "Path containing media files")
 	rootCmd.PersistentFlags().StringVar(&conf.ServerConfig.ServerBinding, "bind", "0.0.0.0:8082", "interface and port binding for the web server")
-	rootCmd.PersistentFlags().BoolVar(&conf.DaemonConfig.AutoConvertMedia, "auto-convert-media", false, "if active the server automatically converts media files to a streamable format")
-	rootCmd.PersistentFlags().BoolVar(&conf.DaemonConfig.DeleteOriginal, "delete-original-media", false, "if active delete the original media after conversion")
-	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.QueueSize, "queue-size", 1000, "daemon tasks queue size")
-	rootCmd.PersistentFlags().IntVar(&conf.DaemonConfig.Workers, "workers", 2, "daemon number of workers")
 	rootCmd.PersistentFlags().BoolVar(&conf.ServerConfig.AuthenticationEnabled, "auth", false, "if active enable user authentication for the web server")
 	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.Database, "db", "ciak_daemon.db", "database file used for persistence")
-	rootCmd.PersistentFlags().StringVar(&conf.DaemonConfig.TransferDestination, "transfer-path", "", "path where to transfer media")
 	rootCmd.PersistentFlags().StringVar(&conf.ServerConfig.OmdbApiKey, "omdb-api-key", "", "omdb movie metadata api key")
 
 }

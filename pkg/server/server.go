@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/GaruGaru/ciak/pkg/config"
-	"github.com/GaruGaru/ciak/pkg/daemon"
 	"github.com/GaruGaru/ciak/pkg/media/details"
 	"github.com/GaruGaru/ciak/pkg/media/discovery"
 	"github.com/GaruGaru/ciak/pkg/server/auth"
@@ -19,7 +18,6 @@ type CiakServer struct {
 	Config           config.CiakServerConfig
 	MediaDiscovery   discovery.MediaDiscovery
 	Authenticator    auth.Authenticator
-	Daemon           daemon.CiakDaemon
 	DetailsRetriever *details.Controller
 }
 
@@ -27,14 +25,12 @@ func NewCiakServer(
 	conf config.CiakServerConfig,
 	discovery discovery.MediaDiscovery,
 	authenticator auth.Authenticator,
-	daemon daemon.CiakDaemon,
 	DetailsRetriever *details.Controller,
 ) CiakServer {
 	return CiakServer{
 		Config:           conf,
 		MediaDiscovery:   discovery,
 		Authenticator:    authenticator,
-		Daemon:           daemon,
 		DetailsRetriever: DetailsRetriever,
 	}
 }
@@ -56,7 +52,6 @@ func (s CiakServer) initRouting(router *mux.Router) {
 	router.HandleFunc("/media/{media}", s.MediaStreamingHandler)
 	router.HandleFunc("/login", s.LoginPageHandler)
 	router.HandleFunc("/api/login", s.LoginApiHandler)
-	router.HandleFunc("/api/media/transfer", s.MediaTransferApi)
 	router.Use(LoggingMiddleware)
 	router.Use(s.SessionAuthMiddleware)
 }
