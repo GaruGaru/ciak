@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/GaruGaru/ciak/internal/cache"
-	"github.com/GaruGaru/ciak/internal/config"
-	"github.com/GaruGaru/ciak/internal/daemon"
-	"github.com/GaruGaru/ciak/internal/media/details"
-	"github.com/GaruGaru/ciak/internal/server/auth"
+	"github.com/GaruGaru/ciak/pkg/cache"
+	"github.com/GaruGaru/ciak/pkg/config"
+	"github.com/GaruGaru/ciak/pkg/daemon"
+	"github.com/GaruGaru/ciak/pkg/media/details"
+	"github.com/GaruGaru/ciak/pkg/server/auth"
 	"github.com/stretchr/testify/require"
 	"net/http"
 	"net/http/httptest"

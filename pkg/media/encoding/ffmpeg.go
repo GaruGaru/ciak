@@ -2,7 +2,7 @@ package encoding
 
 import (
 	"bytes"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	log "github.com/sirupsen/logrus"
 	"os/exec"
 )

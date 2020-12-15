@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"net/http"

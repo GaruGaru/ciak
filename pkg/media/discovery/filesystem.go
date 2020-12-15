@@ -2,8 +2,8 @@ package discovery
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/media/models"
-	"github.com/GaruGaru/ciak/internal/media/translator"
+	"github.com/GaruGaru/ciak/pkg/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/translator"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path"

@@ -2,8 +2,8 @@ package server
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/server/auth"
-	"github.com/GaruGaru/ciak/internal/utils"
+	"github.com/GaruGaru/ciak/pkg/server/auth"
+	"github.com/GaruGaru/ciak/pkg/utils"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 	"html/template"
@@ -53,7 +53,7 @@ func (s CiakServer) createSession(w http.ResponseWriter, r *http.Request, user a
 }
 
 func (s CiakServer) LoginPageHandler(w http.ResponseWriter, r *http.Request) {
-	err := template.Must(template.ParseFiles("static/base.html", "static/login.html")).Execute(w, LoginPage{
+	err := template.Must(template.ParseFiles("ui/base.html", "ui/login.html")).Execute(w, LoginPage{
 		Title: "Login",
 	})
 

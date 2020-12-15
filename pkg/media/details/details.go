@@ -2,8 +2,8 @@ package details
 
 import (
 	"errors"
-	"github.com/GaruGaru/ciak/internal/cache"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/cache"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	"github.com/sirupsen/logrus"
 	"sync"
 )

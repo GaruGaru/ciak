@@ -1,9 +1,9 @@
 package daemon
 
 import (
-	"github.com/GaruGaru/ciak/internal/config"
-	"github.com/GaruGaru/ciak/internal/media/discovery"
-	"github.com/GaruGaru/ciak/internal/media/encoding"
+	"github.com/GaruGaru/ciak/pkg/config"
+	"github.com/GaruGaru/ciak/pkg/media/discovery"
+	"github.com/GaruGaru/ciak/pkg/media/encoding"
 	"github.com/GaruGaru/duty/duty"
 	"github.com/GaruGaru/duty/pool"
 	"github.com/GaruGaru/duty/storage"

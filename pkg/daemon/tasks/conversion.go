@@ -2,8 +2,8 @@ package tasks
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/media/encoding"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/encoding"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"

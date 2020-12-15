@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"

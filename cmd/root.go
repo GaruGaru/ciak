@@ -2,14 +2,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/cache"
-	"github.com/GaruGaru/ciak/internal/config"
-	"github.com/GaruGaru/ciak/internal/daemon"
-	"github.com/GaruGaru/ciak/internal/media/details"
-	"github.com/GaruGaru/ciak/internal/media/discovery"
-	"github.com/GaruGaru/ciak/internal/media/encoding"
-	"github.com/GaruGaru/ciak/internal/server"
-	"github.com/GaruGaru/ciak/internal/server/auth"
+	"github.com/GaruGaru/ciak/pkg/cache"
+	"github.com/GaruGaru/ciak/pkg/config"
+	"github.com/GaruGaru/ciak/pkg/daemon"
+	"github.com/GaruGaru/ciak/pkg/media/details"
+	"github.com/GaruGaru/ciak/pkg/media/discovery"
+	"github.com/GaruGaru/ciak/pkg/media/encoding"
+	"github.com/GaruGaru/ciak/pkg/server"
+	"github.com/GaruGaru/ciak/pkg/server/auth"
 	"github.com/spf13/cobra"
 	"os"
 )

@@ -2,8 +2,8 @@ package daemon
 
 import (
 	"fmt"
-	"github.com/GaruGaru/ciak/internal/daemon/tasks"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/daemon/tasks"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	"github.com/GaruGaru/duty/task"
 	log "github.com/sirupsen/logrus"
 	"path/filepath"

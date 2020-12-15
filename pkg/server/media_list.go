@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/GaruGaru/ciak/internal/media/details"
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/details"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 	"github.com/GaruGaru/duty/task"
 	"github.com/sirupsen/logrus"
 	"html/template"
@@ -106,7 +106,7 @@ func (s CiakServer) MediaListHandler(w http.ResponseWriter, r *http.Request) {
 		TransferEnabled: s.Daemon.Conf.TransferDestination != "",
 	}
 
-	var mediaListTemplate = template.Must(template.ParseFiles("static/base.html", "static/media-list.html"))
+	var mediaListTemplate = template.Must(template.ParseFiles("ui/base.html", "ui/media-list.html"))
 
 	if err := mediaListTemplate.Execute(w, mediaListPage); err != nil {
 		logrus.Error(err)

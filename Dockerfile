@@ -30,7 +30,7 @@ VOLUME /data
 
 VOLUME /db
 
-COPY static/ /static
+COPY ui/ /ui
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 

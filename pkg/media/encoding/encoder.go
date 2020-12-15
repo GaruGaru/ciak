@@ -1,7 +1,7 @@
 package encoding
 
 import (
-	"github.com/GaruGaru/ciak/internal/media/models"
+	"github.com/GaruGaru/ciak/pkg/media/models"
 )
 
 type MediaEncoder interface {
